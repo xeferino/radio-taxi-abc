@@ -18,3 +18,7 @@ Route::get('/', function () {
 });
 
 Route::get('/company', 'CompanyController@index')->name('company.index');
+Route::post('/services', 'CompanyController@services')->name('company.services');
+Route::post('/movil', 'CompanyController@movil')->name('company.movil');
+Route::post('/porcentaje', 'CompanyController@porcentaje')->name('company.porcentaje');
+

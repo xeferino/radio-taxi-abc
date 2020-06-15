@@ -2,6 +2,10 @@
 <html lang="en">
     @include('template._head')
     <body>
+        {{-- <script>
+            NProgress.configure({ showSpinner: false });
+            NProgress.start();
+        </script> --}}
         <div class="container-scroller">
             <!-- partial:partials/_sidebar.html -->
             @include('template._sisebar')
@@ -18,7 +22,7 @@
                     <!-- content-wrapper ends -->
 
                     <!-- partial:partials/_footer.html -->
-                    @include('template._footer')
+                    {{-- @include('template._footer') --}}
                     <!-- partial -->
                 </div>
             <!-- main-panel ends -->

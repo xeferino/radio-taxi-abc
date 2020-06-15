@@ -2,12 +2,15 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- CSRF Token -->
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title')</title>
     <!-- plugins:css -->
     <link rel="stylesheet" href="{{ asset('vendors/mdi/css/materialdesignicons.min.css') }}">
     <link rel="stylesheet" href="{{ asset('vendors/css/vendor.bundle.base.css') }}">
     <!-- endinject -->
     <!-- Plugin css for this page -->
+    <link href="{{ asset('vendors/nprogress/nprogress.css') }}" rel="stylesheet" />
     <link rel="stylesheet" href="{{ asset('vendors/jvectormap/jquery-jvectormap.css') }}">
     <link rel="stylesheet" href="{{ asset('vendors/flag-icon-css/css/flag-icon.min.css') }}">
     <link rel="stylesheet" href="{{ asset('vendors/owl-carousel-2/owl.carousel.min.css') }}">
@@ -23,4 +26,6 @@
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     <!-- End layout styles -->
     <link rel="shortcut icon" href="{{ asset('images/taxi.svg') }}" />
+    <link rel="stylesheet" href="{{ asset('vendors/toaster/toastr.min.css') }}">
+    <script src="{{ asset('vendors/nprogress/nprogress.js') }}"></script>
 </head>
