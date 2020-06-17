@@ -13,12 +13,12 @@
           <a class="nav-link" id="profileDropdown" href="#" data-toggle="dropdown">
             <div class="navbar-profile">
               <img class="img-xs rounded-circle" src="{{ asset('images/faces/default.png') }}" alt="">
-              <p class="mb-0 d-none d-sm-block navbar-profile-name">Henry Klein</p>
+              <p class="mb-0 d-none d-sm-block navbar-profile-name">{{ Auth::user()->nombre }}</p>
               <i class="mdi mdi-menu-down d-none d-sm-block"></i>
             </div>
           </a>
           <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list" aria-labelledby="profileDropdown">
-            <a href="" class="dropdown-item preview-item">
+            <a href="{{route('logout')}}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="dropdown-item preview-item">
               <div class="preview-thumbnail">
                 <div class="preview-icon bg-dark rounded-circle">
                   <i class="mdi mdi-logout text-danger"></i>
@@ -28,6 +28,9 @@
                 <p class="preview-subject mb-1">Salir</p>
               </div>
             </a>
+            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                @csrf
+            </form>
           </div>
         </li>
       </ul>

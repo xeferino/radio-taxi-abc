@@ -564,10 +564,6 @@ class CompanyController extends Controller
                     }
                 }
                 break;
-
-            default:
-                # code...
-                break;
         }
     }
 }

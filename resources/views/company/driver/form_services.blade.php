@@ -181,7 +181,7 @@
             </table>
         </div>
     </div>
-    <div class="col-md-4 col-xl-3 col-sm-6 mb-2">
+    <div class="col-md-4 col-xl-4 col-sm-6 mb-2">
         <div class="bg-gray-dark d-flex d-md-block d-xl-flex flex-row py-3 px-4 px-md-3 px-xl-4 rounded mt-3">
             <div class="text-md-center text-xl-left">
                 <h6 class="mb-1">% Chofer</h6>
@@ -193,7 +193,7 @@
         </div>
     </div>
 
-    <div class="col-md-4 col-xl-3 col-sm-6 mb-2">
+    <div class="col-md-4 col-xl-4 col-sm-6 mb-2">
         <div class="bg-gray-dark d-flex d-md-block d-xl-flex flex-row py-3 px-4 px-md-3 px-xl-4 rounded mt-3">
             <div class="text-md-center text-xl-left">
                 <h6 class="mb-1">% Movil</h6>
@@ -205,7 +205,7 @@
         </div>
     </div>
 
-    <div class="col-md-4 col-xl-3 col-sm-6 mb-2">
+    <div class="col-md-4 col-xl-4 col-sm-6 mb-2">
         <div class="bg-gray-dark d-flex d-md-block d-xl-flex flex-row py-3 px-4 px-md-3 px-xl-4 rounded mt-3">
             <div class="text-md-center text-xl-left">
                 <h6 class="mb-1">Total</h6>

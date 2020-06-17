@@ -15,6 +15,8 @@
     <!-- endinject -->
     <!-- Layout styles -->
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('vendors/toaster/toastr.min.css') }}">
+
     <!-- End layout styles -->
     <link rel="shortcut icon" href="{{ asset('images/taxi.svg') }}" />
   </head>
@@ -26,17 +28,27 @@
             <div class="card col-lg-4 mx-auto">
               <div class="card-body px-5 py-5">
                 <h3 class="card-title text-center mb-5">ConvenioSoft</h3>
-                <form>
+                @if(session()->has('credencials'))
+                    <div class="alert alert-{{ session()->get('label') }} alert-highlighted alert-dismissible fade show" role="alert">
+                    {{ session()->get('credencials') }}
+                    </div>
+                @endif
+                <form method="POST" name="form-login" id="form-login" action="{{ route('login') }}">
                   <div class="form-group">
-                    <label>R.U.C. *</label>
-                    <input type="text" class="form-control p_input">
+                    <label>R.U.T. *</label>
+                    <input type="text" name="rut" value="{{ old('rut') }}" class="form-control p_input" id="rut">
                   </div>
                   <div class="form-group">
                     <label>Clave *</label>
-                    <input type="text" class="form-control p_input">
+                    <input type="password" name="password" class="form-control p_input" id="password">
                   </div>
                   <div class="text-center">
-                    <button type="submit" class="btn btn-secondary btn-block enter-btn">Login</button>
+                    <button class="btn btn-secondary btn-block enter-btn" id="login_disabled" style="display: none;" type="button" disabled>
+                        <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+                        Envinado...
+                    </button>
+                    <button type="submit" class="btn btn-secondary btn-block enter-btn" id="login"> Login</button>
+                    {{-- <button type="submit" class="btn btn-secondary btn-block enter-btn">Login</button> --}}
                   </div>
                   <p class="sign-up">Todos los derechos reservados
                     <br>
@@ -77,6 +89,8 @@
     <!-- container-scroller -->
     <!-- plugins:js -->
     <script src="{{ asset('vendors/js/vendor.bundle.base.js') }}"></script>
+    <script src="{{ asset('js/axios.js') }}"></script>
+    <script src="{{ asset('vendors/toaster/toastr.min.js') }}"></script>
     <!-- endinject -->
     <!-- Plugin js for this page -->
     <!-- End plugin js for this page -->
@@ -86,6 +100,61 @@
     <script src="{{ asset('js/misc.js') }}"></script>
     <script src="{{ asset('js/settings.js') }}"></script>
     <script src="{{ asset('js/todolist.js') }}"></script>
+
+    <script>
+        $("#form-login").submit(function( event ) {
+            event.preventDefault();
+            var rut       = $("#rut").val();
+            var password  = $("#password").val();
+            if(rut=="" || password==""){
+                toastr.error('Up! Error, los campos (R.U.T. - CLAVE) son obligarios. Intente nuevamente.', {timeOut: 5000});
+                clear();
+            }else{
+                $("#login_disabled").show();
+                $("#login").hide();
+                axios.post('{{ route('login')}}', {
+                    rut:rut,
+                    password:password
+                }).then(response => {
+                    if(response.data.success){
+                        toastr.success('Inicio de Sesión Correctamente. Redireccionando...', {timeOut: 2000});
+                        $("#login_disabled").hide();
+                        $("#login").show();
+                        setTimeout(function () {location.href = '{{ env('APP_URL') }}/'+response.data.url+''}, 2000);
+                        clear();
+                    }else if(response.data.error=="invalid"){
+                        toastr.error('Up! Error, en las credenciales ingresadas.', {timeOut: 5000});
+                        $("#login_disabled").hide();
+                        $("#login").show();
+                        clear();
+                    }else if(response.data.error=="user"){
+                        toastr.error('Up! Error, usuario no existe.', {timeOut: 5000});
+                        $("#login_disabled").hide();
+                        $("#login").show();
+                        clear();
+                    }else{
+                        toastr.error('Up! a ocurrido un error, intente nuevamente.', {timeOut: 5000});
+                        $("#login_disabled").hide();
+                        $("#login").show();
+                        clear();
+                    }
+                }).catch(e => {
+                    toastr.error('Up! Error '+e+'', {timeOut: 10000});
+                    $("#login_disabled").hide();
+                    $("#login").show();
+                    clear();
+                    console.log(e);
+                });
+            }
+
+        });
+        function clear() {
+            $("#rut").val('');
+            $("#password").val('');
+        }
+
+    </script>
+
     <!-- endinject -->
   </body>
 </html>
