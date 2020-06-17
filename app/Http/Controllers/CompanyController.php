@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Support\Facades\Auth;
+use App\User;
 
 class CompanyController extends Controller
 {
@@ -52,6 +54,47 @@ class CompanyController extends Controller
         }
         if (count($conductores) > 0) {
             return response()->json(['success' => true, 'choferes' => $conductores], 200);
+        } else {
+            return response()->json(['error' => true], 200);
+        }
+    }
+
+    public function movilChofer(Request $request)
+    {
+        $choferes = DB::table('movil chofer')
+                    ->where('chofer1',   Auth::user()->nombre)
+                    ->orwhere('chofer2', Auth::user()->nombre)
+                    ->orwhere('chofer3', Auth::user()->nombre)
+                    ->get();
+        $conductores = [];
+
+        foreach ($choferes as $item) {
+
+            if ($item->chofer1 == null or $item->chofer1 == "") {
+                $chofer1 = "null";
+            } else {
+                $chofer1 = $item->chofer1;
+            }
+            if ($item->chofer2 == null or $item->chofer2 == "") {
+                $chofer2 = "null";
+            } else {
+                $chofer2 = $item->chofer2;
+            }
+            if ($item->chofer3 == null or $item->chofer3 == "") {
+                $chofer3 = "null";
+            } else {
+                $chofer3 = $item->chofer3;
+            }
+            array_push($conductores, [
+                'movil'     => $item->movil,
+                'id'        => $item->id,
+                'chofer1'   => $chofer1,
+                'chofer2'   => $chofer2,
+                'chofer3'   => $chofer3,
+            ]);
+        }
+        if (count($conductores) > 0) {
+            return response()->json(['success' => true, 'movil' => Auth::user()->nombre, 'conductores' => $conductores, 'chofer' => $conductores[0]['movil']], 200);
         } else {
             return response()->json(['error' => true], 200);
         }

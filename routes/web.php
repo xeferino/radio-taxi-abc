@@ -27,6 +27,7 @@ Route::post('/logout', 'Auth\LoginController@logout')->name('logout');
 Route::middleware(['auth'])->get('/company', 'CompanyController@index')->name('company.index');
 Route::middleware(['auth'])->post('/services', 'CompanyController@services')->name('company.services');
 Route::middleware(['auth'])->post('/movil', 'CompanyController@movil')->name('company.movil');
+Route::middleware(['auth'])->post('/movilChofer', 'CompanyController@movilChofer')->name('company.chofer');
 Route::middleware(['auth'])->post('/porcentaje', 'CompanyController@porcentaje')->name('company.porcentaje');
 Route::middleware(['auth'])->post('/store', 'CompanyController@store')->name('company.store');
 Route::middleware(['auth'])->post('/vale', 'CompanyController@vale')->name('company.vale');

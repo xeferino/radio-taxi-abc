@@ -2,6 +2,7 @@
     <input type="hidden" id="day" value="{{ date('Y-m-d') }}">
     <input type="hidden" name="run" id="run">
     <input type="hidden" name="paciente"  id="paciente">
+    <input type="hidden" name="conectado"  id="conectado" value="{{ Auth::user()->nombre }}">
     <div class="row" style="border: 2px solid #eee; padding:20px;">
         <div class="col-md-4">
           <div class="form-group row">
@@ -24,7 +25,7 @@
                     <div class="form-group">
                         <label>Movil</label>
                         <div class="input-group">
-                          <input type="text" class="form-control" name="movil" id="movil">
+                          <input type="text" class="form-control" name="movil" id="movil" readonly>
                           <div class="input-group-append">
                             <span class="input-group-text">#</span>
                           </div>
@@ -239,6 +240,7 @@
     jQuery(document).ready(function($){
         $("#zulu").select2();
         getVale();
+        getChofer();
         var date = new Date().toLocaleDateString();
         let fecha = document.querySelector('#fecha');
             fecha.value = $('#day').val();
@@ -248,8 +250,13 @@
         });
 
         $('#chofer').on('change', function() {
-            $("#chofer_select").val(this.value);
+            if($("#conectado").val().trim() != this.value.trim()){
+                toastr.error('Atención no esta permitido cambiar de conductor, solo puede hacer registros del coductor logueado.', {timeOut: 15000});
+                getChofer();
+            }else{
+                $("#chofer_select").val(this.value);
                 getPorcentaje($("#chofer").val());
+            }
         });
 
         $('#zulu').on('change', function() {
@@ -378,6 +385,7 @@
                         return html;
                     });
                     clear();
+                    getChofer();
                 }else{
                     toastr.error('Up! Error verifique, no se ingresaron los datos correctamente', {timeOut: 10000});
                     $("#store_disabled").hide();
@@ -443,6 +451,51 @@
             $('#chofer').html('');
             $("#chofer_select").val('');
         }
+    }
+
+    function getChofer() {
+        axios.post('{{ route('company.chofer')}}', {
+        }).then(response => {
+            if(response.data.success){
+                $("#movil").val(response.data.chofer);
+                getPorcentaje(response.data.movil);
+                $("#chofer_select").val(response.data.movil);
+                getVale();
+                $('#chofer').html(function(){
+                        html = '';
+                        if(response.data.conductores){
+                            $.each(response.data.conductores, function(i,item){
+                                var select1 = '';
+                                var select2 = '';
+                                var select3 = '';
+                                if(item.chofer1.trim() == response.data.movil.trim()){
+                                    select1="selected";
+                                }else if(item.chofer2.trim() == response.data.movil.trim()){
+                                    select2="selected";
+                                }else if(item.chofer3.trim() == response.data.movil.trim()){
+                                    select3="selected";
+                                }
+                                if(item.chofer1!="null"){
+                                    html += '<option value="'+item.chofer1+'" '+select1+'>'+item.chofer1+'</option>';
+                                }
+                                if(item.chofer2!="null"){
+                                    html += '<option value="'+item.chofer2+'" '+select2+'>'+item.chofer2+'</option>';
+                                }
+                                if(item.chofer3!="null"){
+                                    html += '<option value="'+item.chofer3+'" '+select3+'>'+item.chofer3+'</option>';
+                                }
+                            });
+                        }
+                        return html;
+                    });
+
+            }else{
+                toastr.error('Up! Error, cosultando los datos de chofer y el movil asociado'+e+'', {timeOut: 10000});
+            }
+        }).catch(e => {
+            toastr.error('Up! Error '+e+'', {timeOut: 10000});
+            console.log(e);
+        });
     }
 
     function getPorcentaje(chofer) {
