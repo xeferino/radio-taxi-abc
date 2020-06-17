@@ -490,7 +490,7 @@
                     });
 
             }else{
-                toastr.error('Up! Error, cosultando los datos de chofer y el movil asociado'+e+'', {timeOut: 10000});
+                toastr.error('Up! Error, cosultando los datos de chofer y el movil asociado; es posible que no tenga movil asignado', {timeOut: 10000});
             }
         }).catch(e => {
             toastr.error('Up! Error '+e+'', {timeOut: 10000});
