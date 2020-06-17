@@ -7,7 +7,7 @@
                     <div class="card-body">
                         <h2 class="card-title text-center">Convenios Radio Taxi ABC</h2>
                         <div class="text-center" id="spinner">
-                            <div class="spinner-grow text-primary" style="width: 3rem; height: 3rem;"  role="status">
+                            <div class="spinner-grow text-secondary" style="width: 3rem; height: 3rem;"  role="status">
                                 <span class="sr-only">Loading...</span>
                             </div>
                         </div>
@@ -29,7 +29,7 @@
                     }).then(response => {
                         $("#spinner").fadeOut();
                         toastr.success('Bienvenido al ConvenioSoft', {timeOut: 3000});
-                        $("#form_services").html(response.data);
+                        $("#form_services").html(response.data).fadeIn();
                     }).catch(e => {
                         toastr.error('Up! Error cargando la informacion. '+e+'', {timeOut: 3000});
                         $("#spinner").fadeOut();

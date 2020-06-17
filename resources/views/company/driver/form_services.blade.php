@@ -208,7 +208,7 @@
     <div class="col-md-4 col-xl-3 col-sm-6 mb-2">
         <div class="bg-gray-dark d-flex d-md-block d-xl-flex flex-row py-3 px-4 px-md-3 px-xl-4 rounded mt-3">
             <div class="text-md-center text-xl-left">
-                <h6 class="mb-1">Total ZULU</h6>
+                <h6 class="mb-1">Total</h6>
                 <p class="text-muted mb-0"></p>
             </div>
             <div class="align-self-center flex-grow text-right text-md-center text-xl-right py-md-2 py-xl-0">
