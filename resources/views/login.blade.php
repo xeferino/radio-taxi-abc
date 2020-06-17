@@ -28,11 +28,6 @@
             <div class="card col-lg-4 mx-auto">
               <div class="card-body px-5 py-5">
                 <h3 class="card-title text-center mb-5">ConvenioSoft</h3>
-                @if(session()->has('credencials'))
-                    <div class="alert alert-{{ session()->get('label') }} alert-highlighted alert-dismissible fade show" role="alert">
-                    {{ session()->get('credencials') }}
-                    </div>
-                @endif
                 <form method="POST" name="form-login" id="form-login" action="{{ route('login') }}">
                   <div class="form-group">
                     <label>R.U.T. *</label>

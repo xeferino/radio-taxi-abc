@@ -21,6 +21,16 @@ class LoginController extends Controller
     |
     */
 
+
+    /**
+    *
+    * @version 1.0
+    *
+    * @author Jose Lozada <josegregoriolozadae@gmail.com>
+    * @copyright josegregoriolozadae@gmail.com
+    *
+    */
+
     use AuthenticatesUsers;
 
     /**
@@ -30,6 +40,15 @@ class LoginController extends Controller
      */
     protected $redirectTo = RouteServiceProvider::HOME;
 
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('guest')->except('logout');
+    }
 
     public function showLoginForm()
     {
@@ -43,8 +62,6 @@ class LoginController extends Controller
         if($user){
             if (Auth::attempt($credentials)) {
                 return response()->json(['success' => true, 'url' => 'company'], 200);
-                /* session()->flash("connect","login successfully");
-                redirect('company'); */
             }else{
                 return response()->json(['error' => 'invalid'], 200);
             }
