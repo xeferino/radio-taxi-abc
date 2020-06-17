@@ -1,8 +1,12 @@
 <!-- container-scroller -->
     <!-- plugins:js -->
+
     <script src="{{ asset('vendors/js/vendor.bundle.base.js') }}"></script>
     <script src="{{ asset('js/axios.js') }}"></script>
     <script src="{{ asset('vendors/toaster/toastr.min.js') }}"></script>
+    <script src="{{ asset('vendors/dataTables/jquery.dataTables.min.js')}}"></script>
+    <script src="{{ asset('vendors/dataTables/dataTables.bootstrap4.min.js')}}"></script>
+
 
     <!-- endinject -->
     <!-- Plugin js for this page -->

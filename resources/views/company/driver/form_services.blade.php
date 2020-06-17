@@ -1,5 +1,7 @@
 <form class="forms-sample mt-5" name="form-proccess" id="form-proccess" method="POST">
     <input type="hidden" id="day" value="{{ date('Y-m-d') }}">
+    <input type="hidden" name="run" id="run">
+    <input type="hidden" name="paciente"  id="paciente">
     <div class="row" style="border: 2px solid #eee; padding:20px;">
         <div class="col-md-4">
           <div class="form-group row">
@@ -127,7 +129,7 @@
                     <div class="form-group" style="border: 2px solid #eee; padding:20px;">
                         <label>Paciente Seleccionado</label>
                         <div class="input-group">
-                        <input type="text" class="form-control" name="paciente" id="paciente" readonly>
+                        <input type="text" class="form-control" name="paciente_select" id="paciente_select" readonly>
                         <div class="input-group-append">
                             <span class="input-group-text"><i class="mdi mdi-account-card-details"></i></span>
                         </div>
@@ -152,10 +154,69 @@
             </div>
           </div>
           <div class="col-md-12 col-sm-12 mb-2">
+            <button class="btn btn-primary btn-lg float-right" id="store_disabled" style="display: none;" type="button" disabled>
+                <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+                Envinado...
+            </button>
             <button type="submit" class="btn btn-md btn-primary btn-lg float-right" id="store"> Guardar</button>
           </div>
     </div>
 </form>
+<div class="row  mt-2" style="border: 2px solid #eee; padding:20px;">
+    <div class="col-md-12 col-sm-12">
+        <div class="table-responsive-xl">
+            <table class="table table-hover table-striped" style="background-color: #eee; color:#000; width:100%">
+                <thead>
+                    <tr class="thead-color">
+                        <th> N° Vale </th>
+                        <th> ZULU </th>
+                        <th> Recorrido </th>
+                        <th> % Chofer </th>
+                        <th> % Movil </th>
+                        <th> Total ZULU </th>
+                    </tr>
+                </thead>
+                <tbody id="list_servicios">
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="col-md-4 col-xl-3 col-sm-6 mb-2">
+        <div class="bg-gray-dark d-flex d-md-block d-xl-flex flex-row py-3 px-4 px-md-3 px-xl-4 rounded mt-3">
+            <div class="text-md-center text-xl-left">
+                <h6 class="mb-1">% Chofer</h6>
+                <p class="text-muted mb-0"></p>
+            </div>
+            <div class="align-self-center flex-grow text-right text-md-center text-xl-right py-md-2 py-xl-0">
+                <h6 class="font-weight-bold mb-0" id="format_pc">0.00</h6>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4 col-xl-3 col-sm-6 mb-2">
+        <div class="bg-gray-dark d-flex d-md-block d-xl-flex flex-row py-3 px-4 px-md-3 px-xl-4 rounded mt-3">
+            <div class="text-md-center text-xl-left">
+                <h6 class="mb-1">% Movil</h6>
+                <p class="text-muted mb-0"></p>
+            </div>
+            <div class="align-self-center flex-grow text-right text-md-center text-xl-right py-md-2 py-xl-0">
+                <h6 class="font-weight-bold mb-0" id="format_pm">0.00</h6>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4 col-xl-3 col-sm-6 mb-2">
+        <div class="bg-gray-dark d-flex d-md-block d-xl-flex flex-row py-3 px-4 px-md-3 px-xl-4 rounded mt-3">
+            <div class="text-md-center text-xl-left">
+                <h6 class="mb-1">Total ZULU</h6>
+                <p class="text-muted mb-0"></p>
+            </div>
+            <div class="align-self-center flex-grow text-right text-md-center text-xl-right py-md-2 py-xl-0">
+                <h6 class="font-weight-bold mb-0" id="format_tz">0.00</h6>
+            </div>
+        </div>
+    </div>
+</div>
 <!-- Modal -->
 <div class="modal fade" id="modal_paciente" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
@@ -194,6 +255,8 @@
         $('#zulu').on('change', function() {
             if(this.value=="MUTUAL DE SEGURIDAD"){
                 getPacientes();
+            }else{
+                $("#paciente_select").val('');
             }
         });
 
@@ -209,12 +272,18 @@
             }
         });
 
+        $('#valor').on('input', function () {
+            this.value = this.value.replace(/[^0-9,.]/g, '').replace(/,/g, '.');
+        });
+
         /* $("#form-proccess")keypress(function(e) {
             var code = (e.keyCode ? e.keyCode : e.which);
             if(code==13){
                 return false;
             }
         }); */
+
+        const servicios = [];
 
         $("#form-proccess").submit(function( event ) {
             event.preventDefault();
@@ -226,11 +295,17 @@
             var vale        = $("#vale").val();
             var recorrido   = $("#recorrido").val();
             var valor       = $("#valor").val();
+            var paciente_select    = $("#paciente_select").val();
             var paciente    = $("#paciente").val();
+            var run         = $("#run").val();
 
         if(fecha=='' || movil=='' || chofer=='' || recorrido=='' || valor=='' || porcentaje=='' || zulu=='0'){
             toastr.error('Atención antes de ingresar un vale debe verificar que todos los campos esten llenos, por favor verifique!', {timeOut: 15000});
+        }else if(zulu=="MUTUAL DE SEGURIDAD" && paciente_select==""){
+            toastr.error('Up! Error verifique, a seleccionado mutual de seguridad y en este proceso debe agregar un paciente', {timeOut: 10000});
         }else{
+            $("#store_disabled").show();
+            $("#store").hide();
             axios.post('{{ route('company.store')}}', {
                 fecha:fecha,
                 movil:movil,
@@ -240,17 +315,79 @@
                 vale:vale,
                 recorrido:recorrido,
                 valor:valor,
-                paciente:paciente
+                paciente:paciente,
+                run:run
             }).then(response => {
                 if(response.data.success){
                     toastr.success(''+response.data.msg+'', {timeOut: 10000});
+                    $("#store_disabled").hide();
+                    $("#store").show();
+                    if(porcentaje==100){
+                        pmovil = ((Number(valor)*(Number(porcentaje)))/100);
+                        pchofer = 0;
+                    }
+                    if(porcentaje!=100){
+                        pchofer = ((Number(valor)*(Number(porcentaje)))/100);
+                        pmovil = Number(valor)-pchofer;
+                    }
+
+                    servicios.push(
+                        {   vale: vale,
+                            zulu: zulu,
+                            recorrido: recorrido,
+                            pchofer: pchofer,
+                            pmovil: pmovil,
+                            total: Number(valor)
+                        }
+                    );
+
+                    var porc_chofer =   0;
+                    var porc_movil  =   0;
+                    var total_zulu  =   0;
+
+                    $.each(servicios, function(i,item){
+
+                        porc_chofer+=item.pchofer;
+                        porc_movil+=item.pmovil;
+                        total_zulu+=item.total;
+                    });
+
+                    var  format_pc = new Intl.NumberFormat("de-DE", {style: "currency", currency: "USD"}).format(porc_chofer);
+                    var  format_pm = new Intl.NumberFormat("de-DE", {style: "currency", currency: "USD"}).format(porc_movil);
+                    var  format_tz = new Intl.NumberFormat("de-DE", {style: "currency", currency: "USD"}).format(total_zulu);
+                    $("#format_pc").html(''+format_pc+'');
+                    $("#format_pm").html(''+format_pm+'');
+                    $("#format_tz").html(''+format_tz+'');
+
+
+                    $('#list_servicios').html(function(){
+                        html = '';
+                        $.each(servicios, function(i,item){
+                            var  ft_pc = new Intl.NumberFormat("de-DE", {style: "currency", currency: "USD"}).format(item.pchofer);
+                            var  ft_pm = new Intl.NumberFormat("de-DE", {style: "currency", currency: "USD"}).format(item.pmovil);
+                            var  ft_tz = new Intl.NumberFormat("de-DE", {style: "currency", currency: "USD"}).format(item.total);
+                            html += '<tr>';
+                                html += '<td>'+item.vale+'</td>';
+                                html += '<td>'+item.zulu+'</td>';
+                                html += '<td>'+item.recorrido+'</td>';
+                                html += '<td>'+ft_pc+'</td>';
+                                html += '<td>'+ft_pm+'</td>';
+                                html += '<td>'+ft_tz+'</td>';
+                            html += '</tr>';
+                        });
+                        return html;
+                    });
                     clear();
                 }else{
                     toastr.error('Up! Error verifique, no se ingresaron los datos correctamente', {timeOut: 10000});
+                    $("#store_disabled").hide();
+                    $("#store").show();
                     clear();
                 }
             }).catch(e => {
                 toastr.error('Up! Error '+e+'', {timeOut: 10000});
+                $("#store_disabled").hide();
+                $("#store").show();
                 console.log(e);
             });
         }
@@ -331,7 +468,6 @@
             }else{
                 toastr.error('Up! Error buscando el vale siguiente a ingresar', {timeOut: 10000});
             }
-        console.log(response);
         }).catch(e => {
             toastr.error('Up! Error '+e+'', {timeOut: 10000});
             console.log(e);
@@ -348,7 +484,9 @@
         $("#zulu").select2('val','0');
         $("#recorrido").val('');
         $("#valor").val('');
+        $("#paciente_select").val('');
         $("#paciente").val('');
+        $("#run").val('');
     }
 
 </script>

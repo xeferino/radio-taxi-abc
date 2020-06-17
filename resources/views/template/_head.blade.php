@@ -28,4 +28,19 @@
     <link rel="shortcut icon" href="{{ asset('images/taxi.svg') }}" />
     <link rel="stylesheet" href="{{ asset('vendors/toaster/toastr.min.css') }}">
     <script src="{{ asset('vendors/nprogress/nprogress.js') }}"></script>
+    <style type="text/css">
+        .table-striped tbody tr:nth-of-type(odd){
+         background-color: #d1d1d1 !important;
+        }
+        .table-hover tbody tr:hover{
+         background-color:#002033 !important;
+         color: #ccc !important;
+         cursor: pointer;
+        }
+        .thead-color{
+         background-color: #002033 !important;
+         color: white !important;
+         font-weight: bold;
+        }
+    </style>
 </head>
