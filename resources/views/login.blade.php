@@ -115,7 +115,7 @@
                         toastr.success('Inicio de Sesión Correctamente. Redireccionando...', {timeOut: 2000});
                         $("#login_disabled").hide();
                         $("#login").show();
-                        setTimeout(function () {location.href = '{{ env('APP_URL') }}/'+response.data.url+''}, 2000);
+                        setTimeout(function () {location.href = '{{ route('company.index') }}'}, 2000);
                         clear();
                     }else if(response.data.error=="invalid"){
                         toastr.error('Up! Error, en las credenciales ingresadas.', {timeOut: 5000});
