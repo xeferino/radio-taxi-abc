@@ -4,10 +4,11 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
+use App\User;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\User;
+
 class LoginController extends Controller
 {
     /*
@@ -19,17 +20,16 @@ class LoginController extends Controller
     | redirecting them to your home screen. The controller uses a trait
     | to conveniently provide its functionality to your applications.
     |
-    */
-
+     */
 
     /**
-    *
-    * @version 1.0
-    *
-    * @author Jose Lozada <josegregoriolozadae@gmail.com>
-    * @copyright josegregoriolozadae@gmail.com
-    *
-    */
+     *
+     * @version 1.0
+     *
+     * @author Jose Lozada <josegregoriolozadae@gmail.com>
+     * @copyright josegregoriolozadae@gmail.com
+     *
+     */
 
     use AuthenticatesUsers;
 
@@ -57,24 +57,20 @@ class LoginController extends Controller
 
     public function login(Request $request)
     {
-        $credentials = $request->only('rut', 'password');
-        $user = User::where('rut', $request->rut)->first();
-        if($user){
-            if (Auth::attempt($credentials)) {
-                return response()->json(['success' => true, 'url' => 'company'], 200);
-            }else{
-                return response()->json(['error' => 'invalid'], 200);
-            }
-        }else{
-            return response()->json(['error' => 'user'], 200);
+        $user = User::where('rut', $request->rut)->where('password', $request->password)->first();
+        if ($user) {
+            Auth::login($user);
+            return response()->json(['success' => true, 'url' => 'company'], 200);
+        } else {
+            return response()->json(['error' => 'invalid'], 200);
         }
     }
 
     public function logout()
     {
         Auth::logout();
-        session()->flash("credencials","logout successfull");
-        session()->flash("label","success");
+        session()->flash("credencials", "logout successfull");
+        session()->flash("label", "success");
         return redirect()->intended('login');
     }
 

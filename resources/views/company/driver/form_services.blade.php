@@ -261,6 +261,7 @@
 
         $('#zulu').on('change', function() {
             if(this.value=="MUTUAL DE SEGURIDAD"){
+                $("#spinner").fadeIn();
                 getPacientes();
             }else{
                 $("#paciente_select").val('');
@@ -313,6 +314,7 @@
         }else{
             $("#store_disabled").show();
             $("#store").hide();
+            $("#spinner").fadeIn();
             axios.post('{{ route('company.store')}}', {
                 fecha:fecha,
                 movil:movil,
@@ -329,6 +331,7 @@
                     toastr.success(''+response.data.msg+'', {timeOut: 10000});
                     $("#store_disabled").hide();
                     $("#store").show();
+                    $("#spinner").fadeOut();
                     if(porcentaje==100){
                         pmovil = ((Number(valor)*(Number(porcentaje)))/100);
                         pchofer = 0;
@@ -390,12 +393,15 @@
                     toastr.error('Up! Error verifique, no se ingresaron los datos correctamente', {timeOut: 10000});
                     $("#store_disabled").hide();
                     $("#store").show();
+                    $("#spinner").fadeOut();
                     clear();
                 }
             }).catch(e => {
                 toastr.error('Up! Error '+e+'', {timeOut: 10000});
                 $("#store_disabled").hide();
                 $("#store").show();
+                $("#spinner").fadeOut();
+
                 console.log(e);
             });
         }
@@ -409,8 +415,10 @@
         }).then(response => {
             $("#modal_paciente").modal('show');
             $("#pacientes").html(response.data);
+            $("#spinner").fadeOut();
         }).catch(e => {
             toastr.error('Up! Error '+e+'', {timeOut: 10000});
+            $("#spinner").fadeOut();
             console.log(e);
         });
     }
