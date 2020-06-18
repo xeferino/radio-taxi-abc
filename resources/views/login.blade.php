@@ -28,6 +28,11 @@
             <div class="card col-lg-4 mx-auto">
               <div class="card-body px-5 py-5">
                 <h3 class="card-title text-center mb-5">ConvenioSoft</h3>
+                <div class="text-center" id="spinner" style="display:none;" >
+                    <div class="spinner-grow text-secondary" style="width: 3rem; height: 3rem;"  role="status">
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                </div>
                 <form method="POST" name="form-login" id="form-login" action="{{ route('login') }}">
                   <div class="form-group">
                     <label>R.U.T. *</label>
@@ -69,7 +74,7 @@
 			        </div>
 			        <div class="modal-body text-left">
                       Si tiene algún problema técnico con el sistema, contacte con el programador
-                      al (+56) 979008228 o al email: (compuservicergua@hotmail.com) para brindarle
+                      al (+58) 4149585692 o al email: (josegregoriolozadae@gmail.com) para brindarle
                       soporte de manera inmediata.
 
 			        </div>
@@ -105,6 +110,7 @@
                 toastr.error('Up! Error, los campos (R.U.T. - CLAVE) son obligarios. Intente nuevamente.', {timeOut: 5000});
                 clear();
             }else{
+                $("#spinner").fadeIn();
                 $("#login_disabled").show();
                 $("#login").hide();
                 axios.post('{{ route('login')}}', {
@@ -115,28 +121,33 @@
                         toastr.success('Inicio de Sesión Correctamente. Redireccionando...', {timeOut: 2000});
                         $("#login_disabled").hide();
                         $("#login").show();
+                        $("#spinner").fadeOut();
                         setTimeout(function () {location.href = '{{ route('company.index') }}'}, 2000);
                         clear();
                     }else if(response.data.error=="invalid"){
                         toastr.error('Up! Error, en las credenciales ingresadas.', {timeOut: 5000});
                         $("#login_disabled").hide();
                         $("#login").show();
+                        $("#spinner").fadeOut();
                         clear();
                     }else if(response.data.error=="user"){
                         toastr.error('Up! Error, usuario no existe.', {timeOut: 5000});
                         $("#login_disabled").hide();
                         $("#login").show();
+                        $("#spinner").fadeOut();
                         clear();
                     }else{
                         toastr.error('Up! a ocurrido un error, intente nuevamente.', {timeOut: 5000});
                         $("#login_disabled").hide();
                         $("#login").show();
+                        $("#spinner").fadeOut();
                         clear();
                     }
                 }).catch(e => {
                     toastr.error('Up! Error '+e+'', {timeOut: 10000});
                     $("#login_disabled").hide();
                     $("#login").show();
+                        $("#spinner").fadeOut();
                     clear();
                     console.log(e);
                 });
