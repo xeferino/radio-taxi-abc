@@ -50,6 +50,15 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Throwable $exception)
     {
+        if (env('APP_DEBUG')==false){
+
+            if ($exception instanceof CustomException) {
+                return response()->view('errors.500', [], 500);
+            }
+            if ($exception instanceof CustomException) {
+                return response()->view('errors.404', [], 404);
+            }
+        }
         return parent::render($request, $exception);
     }
 }

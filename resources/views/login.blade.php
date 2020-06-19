@@ -28,7 +28,7 @@
             <div class="card col-lg-4 mx-auto">
               <div class="card-body px-5 py-5">
                 <h3 class="card-title text-center mb-5">ConvenioSoft</h3>
-                <div class="text-center" id="spinner" style="display:none; margin-top:-50px;" >
+                <div class="text-center" id="spinner" style="display:none; margin-top:-40px;" >
                     <div class="spinner-grow text-secondary" style="width: 3rem; height: 3rem;"  role="status">
                         <span class="sr-only">Loading...</span>
                     </div>

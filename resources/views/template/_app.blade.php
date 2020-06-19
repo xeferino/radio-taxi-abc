@@ -17,6 +17,7 @@
 
                 <div class="main-panel">
                     <div class="content-wrapper">
+                        <input type="hidden" name="conectado"  id="conectado" value="{{ Auth::user()->nombre }}">
                         @yield('content')
                     </div>
                     <!-- content-wrapper ends -->

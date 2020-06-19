@@ -2,7 +2,6 @@
     <input type="hidden" id="day" value="{{ date('Y-m-d') }}">
     <input type="hidden" name="run" id="run">
     <input type="hidden" name="paciente"  id="paciente">
-    <input type="hidden" name="conectado"  id="conectado" value="{{ Auth::user()->nombre }}">
     <div class="row" style="border: 2px solid #eee; padding:20px;">
         <div class="col-md-4">
           <div class="form-group row">
@@ -390,17 +389,20 @@
                     clear();
                     getChofer();
                 }else{
-                    toastr.error('Up! Error verifique, no se ingresaron los datos correctamente', {timeOut: 10000});
+                    toastr.error('Up! Error, no se ingresaron los datos correctamente. Intente nuevamente', {timeOut: 10000});
                     $("#store_disabled").hide();
                     $("#store").show();
                     $("#spinner").fadeOut();
                     clear();
+                    getChofer();
                 }
             }).catch(e => {
                 toastr.error('Up! Error '+e+'', {timeOut: 10000});
                 $("#store_disabled").hide();
                 $("#store").show();
                 $("#spinner").fadeOut();
+                clear();
+                getChofer();
 
                 console.log(e);
             });

@@ -25,11 +25,12 @@
             });
 
             function servicios() {
+                var conectado = $("#conectado").val();
                     axios.post('{{ route('company.services')}}', {
                     }).then(response => {
                         $("#spinner").fadeOut();
-                        toastr.success('Bienvenido al ConvenioSoft', {timeOut: 3000});
                         $("#form_services").html(response.data).fadeIn();
+                        toastr.success('Bienvenido al ConvenioSoft '+conectado, {timeOut: 3000});
                     }).catch(e => {
                         toastr.error('Up! Error cargando la informacion. '+e+'', {timeOut: 3000});
                         $("#spinner").fadeOut();

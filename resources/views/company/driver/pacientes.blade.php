@@ -48,6 +48,8 @@
             var pac = $(this).closest("tr").find(".pac").text();
             $("#modal_paciente").modal('hide');
             $("#paciente_select").val(run+' '+pac);
+            $("#paciente").val(pac);
+            $("#run").val(run);
         });
 
         /* var table = $('#dataTablePaciente').DataTable({
