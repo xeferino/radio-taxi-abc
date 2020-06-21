@@ -13885,6 +13885,7 @@ input[type="button"].btn-block {
 .asColorPicker-wrap>.input-group-prepend:first-child>.input-group-text:not(:first-child) {
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
+    border: 1px solid;
 }
 
 .custom-control {

@@ -32,4 +32,6 @@ Route::post('/porcentaje', 'CompanyController@porcentaje')->name('company.porcen
 Route::post('/store', 'CompanyController@store')->name('company.store');
 Route::post('/vale', 'CompanyController@vale')->name('company.vale');
 Route::post('/pacientes', 'CompanyController@pacientes')->name('company.pacientes');
+Route::post('/cliente', 'CompanyController@cliente')->name('company.cliente');
+Route::post('/codigo', 'CompanyController@codigo')->name('company.codigo');
 /* routes company*/
