@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpFoundation\Response;
-use Illuminate\Support\Facades\Auth;
-use App\User;
 
 class CompanyController extends Controller
 {
@@ -72,10 +72,10 @@ class CompanyController extends Controller
     public function movilChofer(Request $request)
     {
         $choferes = DB::table('movil chofer')
-                    ->where('chofer1',   Auth::user()->nombre)
-                    ->orwhere('chofer2', Auth::user()->nombre)
-                    ->orwhere('chofer3', Auth::user()->nombre)
-                    ->get();
+            ->where('chofer1', Auth::user()->nombre)
+            ->orwhere('chofer2', Auth::user()->nombre)
+            ->orwhere('chofer3', Auth::user()->nombre)
+            ->get();
         $conductores = [];
 
         foreach ($choferes as $item) {
@@ -96,11 +96,11 @@ class CompanyController extends Controller
                 $chofer3 = $item->chofer3;
             }
             array_push($conductores, [
-                'movil'     => $item->movil,
-                'id'        => $item->id,
-                'chofer1'   => $chofer1,
-                'chofer2'   => $chofer2,
-                'chofer3'   => $chofer3,
+                'movil' => $item->movil,
+                'id' => $item->id,
+                'chofer1' => $chofer1,
+                'chofer2' => $chofer2,
+                'chofer3' => $chofer3,
             ]);
         }
         if (count($conductores) > 0) {
@@ -134,10 +134,10 @@ class CompanyController extends Controller
 
     public function codigo(Request $request)
     {
-        $codigo = DB::table('clientes')->where('codigo_validacion', $request->codigo)->get();
+        $cliente = DB::table('clientes')->where('codigo_validacion', $request->codigo)->where('rut', $request->rut)->get();
 
-        if (count($codigo) > 0) {
-            return response()->json(['success' => true], 200);
+        if (count($cliente) > 0) {
+            return response()->json(['success' => true, 'cliente' => $cliente], 200);
         } else {
             return response()->json(['error' => true], 200);
         }
@@ -169,6 +169,7 @@ class CompanyController extends Controller
 
     public function store(Request $request)
     {
+        $servicios =  array ();
         switch ($request->porcentaje) {
             case ($request->porcentaje == 100):
 
@@ -178,50 +179,62 @@ class CompanyController extends Controller
 
                     $insert_1 = DB::table('convenios')->insert([
                         ['movil' => $request->movil,
-                        'chofer' => $request->chofer,
-                        'fecha' => $request->fecha,
-                        'vale' => $request->vale,
-                        'zulu' => $request->zulu,
-                        'recorrido' => $request->recorrido,
-                        'final zulu' => $request->valor,
-                        '%movil' => $cal_porc_movil,
+                            'chofer' => $request->chofer,
+                            'fecha' => date("Y-m-d H:i:s"),
+                            'vale' => $request->vale,
+                            'zulu' => $request->zulu,
+                            'recorrido' => $request->recorrido,
+                            'final zulu' => $request->valor,
+                            '%movil' => $cal_porc_movil,
+                            'rut_cliente' => $request->rut,
+                            'nombres_apellidos' => $request->nombre,
+                            'codigo_validacion' => $request->codigo,
                         ],
                     ]);
 
                     $insert_2 = DB::table('resumen_zulus')->insert([
-                        ['fecha' => $request->fecha,
-                        'zulu' => $request->zulu,
-                        'nro servicios' => '1',
-                        'total zulu' => $request->valor,
-                        'vale' => $request->vale,
-                        'recorrido' => $request->recorrido,
-                        'movil' => $request->movil,
-                        'chofer' => $request->chofer,
-                        'descuento' => $this->descuento($request->valor),
+                        ['fecha' => date("Y-m-d H:i:s"),
+                            'zulu' => $request->zulu,
+                            'nro servicios' => '1',
+                            'total zulu' => $request->valor,
+                            'vale' => $request->vale,
+                            'recorrido' => $request->recorrido,
+                            'movil' => $request->movil,
+                            'chofer' => $request->chofer,
+                            'descuento' => $this->descuento($request->valor),
+                            'rut_cliente' => $request->rut,
+                            'nombres_apellidos' => $request->nombre,
+                            'codigo_validacion' => $request->codigo,
                         ],
                     ]);
 
                     $insert_3 = DB::table('resumen_movil')->insert([
-                        ['fecha' => $request->fecha,
-                        'movil' => $request->movil,
-                        'nro servicios' => '1',
-                        'total zulu' => $request->valor,
-                        'vale' => $request->vale,
-                        'recorrido' => $request->recorrido,
-                        'zulu' => $request->zulu,
-                        '%movil' => $cal_porc_movil,
+                        ['fecha' => date("Y-m-d H:i:s"),
+                            'movil' => $request->movil,
+                            'nro servicios' => '1',
+                            'total zulu' => $request->valor,
+                            'vale' => $request->vale,
+                            'recorrido' => $request->recorrido,
+                            'zulu' => $request->zulu,
+                            '%movil' => $cal_porc_movil,
+                            'rut_cliente' => $request->rut,
+                            'nombres_apellidos' => $request->nombre,
+                            'codigo_validacion' => $request->codigo,
                         ],
                     ]);
 
                     $insert_4 = DB::table('resumen_zulus_sin_1_5')->insert([
-                        ['fecha' => $request->fecha,
-                        'zulu' => $request->zulu,
-                        'nro servicios' => '1',
-                        'total zulu' => $request->valor,
-                        'vale' => $request->vale,
-                        'recorrido' => $request->recorrido,
-                        'movil' => $request->movil,
-                        'chofer' => $request->chofer,
+                        ['fecha' => date("Y-m-d H:i:s"),
+                            'zulu' => $request->zulu,
+                            'nro servicios' => '1',
+                            'total zulu' => $request->valor,
+                            'vale' => $request->vale,
+                            'recorrido' => $request->recorrido,
+                            'movil' => $request->movil,
+                            'chofer' => $request->chofer,
+                            'rut_cliente' => $request->rut,
+                            'nombres_apellidos' => $request->nombre,
+                            'codigo_validacion' => $request->codigo,
                         ],
                     ]);
 
@@ -230,21 +243,45 @@ class CompanyController extends Controller
                     ]);
 
                     $insert_6 = DB::table('pago_movil_1,5')->insert([
-                        ['fecha' => $request->fecha,
-                        'movil' => $request->movil,
-                        'vale' => $request->vale,
-                        'recorrido' => $request->recorrido,
-                        'nro servicios' => '1',
-                        'total zulu' => $request->valor,
-                        'zulu' => $request->zulu,
-                        'chofer' => $request->chofer,
-                        'descuento' => $this->descuento($request->valor),
-                        'ver' => '0',
+                        ['fecha' => date("Y-m-d H:i:s"),
+                            'movil' => $request->movil,
+                            'vale' => $request->vale,
+                            'recorrido' => $request->recorrido,
+                            'nro servicios' => '1',
+                            'total zulu' => $request->valor,
+                            'zulu' => $request->zulu,
+                            'chofer' => $request->chofer,
+                            'descuento' => $this->descuento($request->valor),
+                            'ver' => '0',
+                            'rut_cliente' => $request->rut,
+                            'nombres_apellidos' => $request->nombre,
+                            'codigo_validacion' => $request->codigo,
                         ],
                     ]);
 
+                    $resumen = DB::table('resumen_zulus')
+                                ->join('resumen_movil', 'resumen_zulus.vale', '=', 'resumen_movil.vale')
+                                ->select('resumen_movil.total zulu AS total', 'resumen_movil.%chofer AS pchofer', 'resumen_movil.%movil AS pmovil',
+                                         'resumen_movil.zulu AS zulu', 'resumen_movil.recorrido AS recorrido', 'resumen_movil.vale AS vale')
+                                ->where('resumen_zulus.chofer', $request->chofer)
+                                ->where('resumen_zulus.movil', $request->movil)
+                                ->where('resumen_zulus.fecha', 'LIKE', '%' . date('Y-m-d') . '%')
+                                ->get();
+
+                    foreach ($resumen as $item) {
+
+                        array_push($servicios, [
+                            'pchofer' => 0,
+                            'pmovil' => $item->pmovil,
+                            'total' => $item->total,
+                            'vale' => $item->vale,
+                            'zulu' => $item->zulu,
+                            'recorrido' => $item->recorrido
+                        ]);
+                    }
+
                     if ($insert_1 && $insert_2 && $insert_3 && $insert_4 && $insert_5 && $insert_6) {
-                        return response()->json(['success' => true, 'msg' => 'Datos ingresados correctamente, Vale ingresado exitosamente'], 200);
+                        return response()->json(['success' => true, 'servicios' => $servicios, 'msg' => 'Datos ingresados correctamente, Vale ingresado exitosamente'], 200);
                     } else {
                         return response()->json(['error' => true], 200);
                     }
@@ -253,51 +290,63 @@ class CompanyController extends Controller
 
                     $insert_1 = DB::table('clinica integral')->insert([
                         ['movil' => $request->movil,
-                        'chofer' => $request->chofer,
-                        'fecha' => $request->fecha,
-                        'vale' => $request->vale,
-                        'recorrido' => $request->recorrido,
-                        'final zulu' => $request->valor,
-                        'valor final' => $request->valor,
-                        'pchofer' => $request->valor,
-                        'pmovil' => '0',
+                            'chofer' => $request->chofer,
+                            'fecha' => date("Y-m-d H:i:s"),
+                            'vale' => $request->vale,
+                            'recorrido' => $request->recorrido,
+                            'final zulu' => $request->valor,
+                            'valor final' => $request->valor,
+                            'pchofer' => $request->valor,
+                            'pmovil' => '0',
+                            'rut_cliente' => $request->rut,
+                            'nombres_apellidos' => $request->nombre,
+                            'codigo_validacion' => $request->codigo,
                         ],
                     ]);
 
                     $insert_2 = DB::table('resumen_zulus')->insert([
-                        ['fecha' => $request->fecha,
-                        'zulu' => $request->zulu,
-                        'nro servicios' => '1',
-                        'total zulu' => $request->valor,
-                        'vale' => $request->vale,
-                        'recorrido' => $request->recorrido,
-                        'movil' => $request->movil,
-                        'chofer' => $request->chofer,
-                        'descuento' => $this->descuento($request->valor),
+                        ['fecha' => date("Y-m-d H:i:s"),
+                            'zulu' => $request->zulu,
+                            'nro servicios' => '1',
+                            'total zulu' => $request->valor,
+                            'vale' => $request->vale,
+                            'recorrido' => $request->recorrido,
+                            'movil' => $request->movil,
+                            'chofer' => $request->chofer,
+                            'descuento' => $this->descuento($request->valor),
+                            'rut_cliente' => $request->rut,
+                            'nombres_apellidos' => $request->nombre,
+                            'codigo_validacion' => $request->codigo,
                         ],
                     ]);
 
                     $insert_3 = DB::table('resumen_movil')->insert([
-                        ['fecha' => $request->fecha,
-                        'movil' => $request->movil,
-                        'nro servicios' => '1',
-                        'total zulu' => $request->valor,
-                        'vale' => $request->vale,
-                        'recorrido' => $request->recorrido,
-                        'zulu' => $request->zulu,
-                        '%movil' => $cal_porc_movil,
+                        ['fecha' => date("Y-m-d H:i:s"),
+                            'movil' => $request->movil,
+                            'nro servicios' => '1',
+                            'total zulu' => $request->valor,
+                            'vale' => $request->vale,
+                            'recorrido' => $request->recorrido,
+                            'zulu' => $request->zulu,
+                            '%movil' => $cal_porc_movil,
+                            'rut_cliente' => $request->rut,
+                            'nombres_apellidos' => $request->nombre,
+                            'codigo_validacion' => $request->codigo,
                         ],
                     ]);
 
                     $insert_4 = DB::table('resumen_zulus_sin_1_5')->insert([
-                        ['fecha' => $request->fecha,
-                        'zulu' => $request->zulu,
-                        'nro servicios' => '1',
-                        'total zulu' => $request->valor,
-                        'vale' => $request->vale,
-                        'recorrido' => $request->recorrido,
-                        'movil' => $request->movil,
-                        'chofer' => $request->chofer,
+                        ['fecha' => date("Y-m-d H:i:s"),
+                            'zulu' => $request->zulu,
+                            'nro servicios' => '1',
+                            'total zulu' => $request->valor,
+                            'vale' => $request->vale,
+                            'recorrido' => $request->recorrido,
+                            'movil' => $request->movil,
+                            'chofer' => $request->chofer,
+                            'rut_cliente' => $request->rut,
+                            'nombres_apellidos' => $request->nombre,
+                            'codigo_validacion' => $request->codigo,
                         ],
                     ]);
 
@@ -306,21 +355,45 @@ class CompanyController extends Controller
                     ]);
 
                     $insert_6 = DB::table('pago_movil_1,5')->insert([
-                        ['fecha' => $request->fecha,
-                        'movil' => $request->movil,
-                        'vale' => $request->vale,
-                        'recorrido' => $request->recorrido,
-                        'nro servicios' => '1',
-                        'total zulu' => $request->valor,
-                        'zulu' => $request->zulu,
-                        'chofer' => $request->chofer,
-                        'descuento' => $this->descuento($request->valor),
-                        'ver' => '0',
+                        ['fecha' => date("Y-m-d H:i:s"),
+                            'movil' => $request->movil,
+                            'vale' => $request->vale,
+                            'recorrido' => $request->recorrido,
+                            'nro servicios' => '1',
+                            'total zulu' => $request->valor,
+                            'zulu' => $request->zulu,
+                            'chofer' => $request->chofer,
+                            'descuento' => $this->descuento($request->valor),
+                            'ver' => '0',
+                            'rut_cliente' => $request->rut,
+                            'nombres_apellidos' => $request->nombre,
+                            'codigo_validacion' => $request->codigo,
                         ],
                     ]);
 
+                    $resumen = DB::table('resumen_zulus')
+                                ->join('resumen_movil', 'resumen_zulus.vale', '=', 'resumen_movil.vale')
+                                ->select('resumen_movil.total zulu AS total', 'resumen_movil.%chofer AS pchofer', 'resumen_movil.%movil AS pmovil',
+                                         'resumen_movil.zulu AS zulu', 'resumen_movil.recorrido AS recorrido', 'resumen_movil.vale AS vale')
+                                ->where('resumen_zulus.chofer', $request->chofer)
+                                ->where('resumen_zulus.movil', $request->movil)
+                                ->where('resumen_zulus.fecha', 'LIKE', '%' . date('Y-m-d') . '%')
+                                ->get();
+
+                    foreach ($resumen as $item) {
+
+                        array_push($servicios, [
+                            'pchofer' => 0,
+                            'pmovil' => $item->pmovil,
+                            'total' => $item->total,
+                            'vale' => $item->vale,
+                            'zulu' => $item->zulu,
+                            'recorrido' => $item->recorrido
+                        ]);
+                    }
+
                     if ($insert_1 && $insert_2 && $insert_3 && $insert_4 && $insert_5 && $insert_6) {
-                        return response()->json(['success' => true, 'msg' => 'Datos ingresados correctamente en la tabla clinica integral. Vale ingresado'], 200);
+                        return response()->json(['success' => true, 'servicios' => $servicios, 'msg' => 'Datos ingresados correctamente en la tabla clinica integral. Vale ingresado'], 200);
                     } else {
                         return response()->json(['error' => true], 200);
                     }
@@ -328,52 +401,64 @@ class CompanyController extends Controller
 
                     $insert_1 = DB::table('convenios mutual')->insert([
                         ['movil' => $request->movil,
-                        'chofer' => $request->chofer,
-                        'fecha' => $request->fecha,
-                        'vale' => $request->vale,
-                        'recorrido' => $request->recorrido,
-                        'final zulu' => $request->valor,
-                        'valor final' => $request->valor,
-                        'paciente' => $request->paciente,
-                        'run' => $request->run,
-                        'pmovil' => $cal_porc_movil,
+                            'chofer' => $request->chofer,
+                            'fecha' => date("Y-m-d H:i:s"),
+                            'vale' => $request->vale,
+                            'recorrido' => $request->recorrido,
+                            'final zulu' => $request->valor,
+                            'valor final' => $request->valor,
+                            'paciente' => $request->paciente,
+                            'run' => $request->run,
+                            'pmovil' => $cal_porc_movil,
+                            'rut_cliente' => $request->rut,
+                            'nombres_apellidos' => $request->nombre,
+                            'codigo_validacion' => $request->codigo,
                         ],
                     ]);
 
                     $insert_2 = DB::table('resumen_zulus')->insert([
-                        ['fecha' => $request->fecha,
-                        'zulu' => $request->zulu,
-                        'nro servicios' => '1',
-                        'total zulu' => $request->valor,
-                        'vale' => $request->vale,
-                        'recorrido' => $request->recorrido,
-                        'movil' => $request->movil,
-                        'chofer' => $request->chofer,
-                        'descuento' => $this->descuento($request->valor),
+                        ['fecha' => date("Y-m-d H:i:s"),
+                            'zulu' => $request->zulu,
+                            'nro servicios' => '1',
+                            'total zulu' => $request->valor,
+                            'vale' => $request->vale,
+                            'recorrido' => $request->recorrido,
+                            'movil' => $request->movil,
+                            'chofer' => $request->chofer,
+                            'descuento' => $this->descuento($request->valor),
+                            'rut_cliente' => $request->rut,
+                            'nombres_apellidos' => $request->nombre,
+                            'codigo_validacion' => $request->codigo,
                         ],
                     ]);
 
                     $insert_3 = DB::table('resumen_movil')->insert([
-                        ['fecha' => $request->fecha,
-                        'movil' => $request->movil,
-                        'nro servicios' => '1',
-                        'total zulu' => $request->valor,
-                        'vale' => $request->vale,
-                        'recorrido' => $request->recorrido,
-                        'zulu' => $request->zulu,
-                        '%movil' => $cal_porc_movil,
+                        ['fecha' => date("Y-m-d H:i:s"),
+                            'movil' => $request->movil,
+                            'nro servicios' => '1',
+                            'total zulu' => $request->valor,
+                            'vale' => $request->vale,
+                            'recorrido' => $request->recorrido,
+                            'zulu' => $request->zulu,
+                            '%movil' => $cal_porc_movil,
+                            'rut_cliente' => $request->rut,
+                            'nombres_apellidos' => $request->nombre,
+                            'codigo_validacion' => $request->codigo,
                         ],
                     ]);
 
                     $insert_4 = DB::table('resumen_zulus_sin_1_5')->insert([
-                        ['fecha' => $request->fecha,
-                        'zulu' => $request->zulu,
-                        'nro servicios' => '1',
-                        'total zulu' => $request->valor,
-                        'vale' => $request->vale,
-                        'recorrido' => $request->recorrido,
-                        'movil' => $request->movil,
-                        'chofer' => $request->chofer,
+                        ['fecha' => date("Y-m-d H:i:s"),
+                            'zulu' => $request->zulu,
+                            'nro servicios' => '1',
+                            'total zulu' => $request->valor,
+                            'vale' => $request->vale,
+                            'recorrido' => $request->recorrido,
+                            'movil' => $request->movil,
+                            'chofer' => $request->chofer,
+                            'rut_cliente' => $request->rut,
+                            'nombres_apellidos' => $request->nombre,
+                            'codigo_validacion' => $request->codigo,
                         ],
                     ]);
 
@@ -382,21 +467,45 @@ class CompanyController extends Controller
                     ]);
 
                     $insert_6 = DB::table('pago_movil_1,5')->insert([
-                        ['fecha' => $request->fecha,
-                        'movil' => $request->movil,
-                        'vale' => $request->vale,
-                        'recorrido' => $request->recorrido,
-                        'nro servicios' => '1',
-                        'total zulu' => $request->valor,
-                        'zulu' => $request->zulu,
-                        'chofer' => $request->chofer,
-                        'descuento' => $this->descuento($request->valor),
-                        'ver' => '0',
+                        ['fecha' => date("Y-m-d H:i:s"),
+                            'movil' => $request->movil,
+                            'vale' => $request->vale,
+                            'recorrido' => $request->recorrido,
+                            'nro servicios' => '1',
+                            'total zulu' => $request->valor,
+                            'zulu' => $request->zulu,
+                            'chofer' => $request->chofer,
+                            'descuento' => $this->descuento($request->valor),
+                            'ver' => '0',
+                            'rut_cliente' => $request->rut,
+                            'nombres_apellidos' => $request->nombre,
+                            'codigo_validacion' => $request->codigo,
                         ],
                     ]);
 
+                    $resumen = DB::table('resumen_zulus')
+                                ->join('resumen_movil', 'resumen_zulus.vale', '=', 'resumen_movil.vale')
+                                ->select('resumen_movil.total zulu AS total', 'resumen_movil.%chofer AS pchofer', 'resumen_movil.%movil AS pmovil',
+                                         'resumen_movil.zulu AS zulu', 'resumen_movil.recorrido AS recorrido', 'resumen_movil.vale AS vale')
+                                ->where('resumen_zulus.chofer', $request->chofer)
+                                ->where('resumen_zulus.movil', $request->movil)
+                                ->where('resumen_zulus.fecha', 'LIKE', '%' . date('Y-m-d') . '%')
+                                ->get();
+
+                    foreach ($resumen as $item) {
+
+                        array_push($servicios, [
+                            'pchofer' => 0,
+                            'pmovil' => $item->pmovil,
+                            'total' => $item->total,
+                            'vale' => $item->vale,
+                            'zulu' => $item->zulu,
+                            'recorrido' => $item->recorrido
+                        ]);
+                    }
+
                     if ($insert_1 && $insert_2 && $insert_3 && $insert_4 && $insert_5 && $insert_6) {
-                        return response()->json(['success' => true, 'msg' => 'Datos ingresados correctamente en la tabla convenios mutual. Vale ingresado'], 200);
+                        return response()->json(['success' => true, 'servicios' => $servicios, 'msg' => 'Datos ingresados correctamente en la tabla convenios mutual. Vale ingresado'], 200);
                     } else {
                         return response()->json(['error' => true], 200);
                     }
@@ -412,52 +521,64 @@ class CompanyController extends Controller
 
                     $insert_1 = DB::table('convenios')->insert([
                         ['movil' => $request->movil,
-                        'chofer' => $request->chofer,
-                        'fecha' => $request->fecha,
-                        'vale' => $request->vale,
-                        'zulu' => $request->zulu,
-                        'recorrido' => $request->recorrido,
-                        'final zulu' => $request->valor,
-                        '%chofer' => $cal_porc_chofer,
-                        '%movil' => $cal_porc_movil,
+                            'chofer' => $request->chofer,
+                            'fecha' => date("Y-m-d H:i:s"),
+                            'vale' => $request->vale,
+                            'zulu' => $request->zulu,
+                            'recorrido' => $request->recorrido,
+                            'final zulu' => $request->valor,
+                            '%chofer' => $cal_porc_chofer,
+                            '%movil' => $cal_porc_movil,
+                            'rut_cliente' => $request->rut,
+                            'nombres_apellidos' => $request->nombre,
+                            'codigo_validacion' => $request->codigo,
                         ],
                     ]);
 
                     $insert_2 = DB::table('resumen_zulus')->insert([
-                        ['fecha' => $request->fecha,
-                        'zulu' => $request->zulu,
-                        'nro servicios' => '1',
-                        'total zulu' => $request->valor,
-                        'vale' => $request->vale,
-                        'recorrido' => $request->recorrido,
-                        'movil' => $request->movil,
-                        'chofer' => $request->chofer,
-                        'descuento' => $this->descuento($request->valor),
+                        ['fecha' => date("Y-m-d H:i:s"),
+                            'zulu' => $request->zulu,
+                            'nro servicios' => '1',
+                            'total zulu' => $request->valor,
+                            'vale' => $request->vale,
+                            'recorrido' => $request->recorrido,
+                            'movil' => $request->movil,
+                            'chofer' => $request->chofer,
+                            'descuento' => $this->descuento($request->valor),
+                            'rut_cliente' => $request->rut,
+                            'nombres_apellidos' => $request->nombre,
+                            'codigo_validacion' => $request->codigo,
                         ],
                     ]);
 
                     $insert_3 = DB::table('resumen_movil')->insert([
-                        ['fecha' => $request->fecha,
-                        'movil' => $request->movil,
-                        'nro servicios' => '1',
-                        'total zulu' => $request->valor,
-                        'vale' => $request->vale,
-                        'recorrido' => $request->recorrido,
-                        'zulu' => $request->zulu,
-                        '%chofer' => $cal_porc_chofer,
-                        '%movil' => $cal_porc_movil
+                        ['fecha' => date("Y-m-d H:i:s"),
+                            'movil' => $request->movil,
+                            'nro servicios' => '1',
+                            'total zulu' => $request->valor,
+                            'vale' => $request->vale,
+                            'recorrido' => $request->recorrido,
+                            'zulu' => $request->zulu,
+                            '%chofer' => $cal_porc_chofer,
+                            '%movil' => $cal_porc_movil,
+                            'rut_cliente' => $request->rut,
+                            'nombres_apellidos' => $request->nombre,
+                            'codigo_validacion' => $request->codigo,
                         ],
                     ]);
 
                     $insert_4 = DB::table('resumen_zulus_sin_1_5')->insert([
-                        ['fecha' => $request->fecha,
-                        'zulu' => $request->zulu,
-                        'nro servicios' => '1',
-                        'total zulu' => $request->valor,
-                        'vale' => $request->vale,
-                        'recorrido' => $request->recorrido,
-                        'movil' => $request->movil,
-                        'chofer' => $request->chofer,
+                        ['fecha' => date("Y-m-d H:i:s"),
+                            'zulu' => $request->zulu,
+                            'nro servicios' => '1',
+                            'total zulu' => $request->valor,
+                            'vale' => $request->vale,
+                            'recorrido' => $request->recorrido,
+                            'movil' => $request->movil,
+                            'chofer' => $request->chofer,
+                            'rut_cliente' => $request->rut,
+                            'nombres_apellidos' => $request->nombre,
+                            'codigo_validacion' => $request->codigo,
                         ],
                     ]);
 
@@ -466,21 +587,45 @@ class CompanyController extends Controller
                     ]);
 
                     $insert_6 = DB::table('pago_movil_1,5')->insert([
-                        ['fecha' => $request->fecha,
-                        'movil' => $request->movil,
-                        'vale' => $request->vale,
-                        'recorrido' => $request->recorrido,
-                        'nro servicios' => '1',
-                        'total zulu' => $request->valor,
-                        'zulu' => $request->zulu,
-                        'chofer' => $request->chofer,
-                        'descuento' => $this->descuento($request->valor),
-                        'ver' => '0',
+                        ['fecha' => date("Y-m-d H:i:s"),
+                            'movil' => $request->movil,
+                            'vale' => $request->vale,
+                            'recorrido' => $request->recorrido,
+                            'nro servicios' => '1',
+                            'total zulu' => $request->valor,
+                            'zulu' => $request->zulu,
+                            'chofer' => $request->chofer,
+                            'descuento' => $this->descuento($request->valor),
+                            'ver' => '0',
+                            'rut_cliente' => $request->rut,
+                            'nombres_apellidos' => $request->nombre,
+                            'codigo_validacion' => $request->codigo,
                         ],
                     ]);
 
+                    $resumen = DB::table('resumen_zulus')
+                                ->join('resumen_movil', 'resumen_zulus.vale', '=', 'resumen_movil.vale')
+                                ->select('resumen_movil.total zulu AS total', 'resumen_movil.%chofer AS pchofer', 'resumen_movil.%movil AS pmovil',
+                                         'resumen_movil.zulu AS zulu', 'resumen_movil.recorrido AS recorrido', 'resumen_movil.vale AS vale')
+                                ->where('resumen_zulus.chofer', $request->chofer)
+                                ->where('resumen_zulus.movil', $request->movil)
+                                ->where('resumen_zulus.fecha', 'LIKE', '%' . date('Y-m-d') . '%')
+                                ->get();
+
+                    foreach ($resumen as $item) {
+
+                        array_push($servicios, [
+                            'pchofer' => $item->pchofer,
+                            'pmovil' => $item->pmovil,
+                            'total' => $item->total,
+                            'vale' => $item->vale,
+                            'zulu' => $item->zulu,
+                            'recorrido' => $item->recorrido
+                        ]);
+                    }
+
                     if ($insert_1 && $insert_2 && $insert_3 && $insert_4 && $insert_5 && $insert_6) {
-                        return response()->json(['success' => true, 'msg' => 'Datos ingresados correctamente, Vale ingresado exitosamente'], 200);
+                        return response()->json(['success' => true, 'servicios' => $servicios, 'msg' => 'Datos ingresados correctamente, Vale ingresado exitosamente'], 200);
                     } else {
                         return response()->json(['error' => true], 200);
                     }
@@ -489,52 +634,64 @@ class CompanyController extends Controller
 
                     $insert_1 = DB::table('clinica integral')->insert([
                         ['movil' => $request->movil,
-                        'chofer' => $request->chofer,
-                        'fecha' => $request->fecha,
-                        'vale' => $request->vale,
-                        'recorrido' => $request->recorrido,
-                        'final zulu' => $request->valor,
-                        'valor final' => $request->valor,
-                        'pchofer' => $request->valor,
-                        'pmovil' => $cal_porc_movil,
+                            'chofer' => $request->chofer,
+                            'fecha' => date("Y-m-d H:i:s"),
+                            'vale' => $request->vale,
+                            'recorrido' => $request->recorrido,
+                            'final zulu' => $request->valor,
+                            'valor final' => $request->valor,
+                            'pchofer' => $request->valor,
+                            'pmovil' => $cal_porc_movil,
+                            'rut_cliente' => $request->rut,
+                            'nombres_apellidos' => $request->nombre,
+                            'codigo_validacion' => $request->codigo,
                         ],
                     ]);
 
                     $insert_2 = DB::table('resumen_zulus')->insert([
-                        ['fecha' => $request->fecha,
-                        'zulu' => $request->zulu,
-                        'nro servicios' => '1',
-                        'total zulu' => $request->valor,
-                        'vale' => $request->vale,
-                        'recorrido' => $request->recorrido,
-                        'movil' => $request->movil,
-                        'chofer' => $request->chofer,
-                        'descuento' => $this->descuento($request->valor),
+                        ['fecha' => date("Y-m-d H:i:s"),
+                            'zulu' => $request->zulu,
+                            'nro servicios' => '1',
+                            'total zulu' => $request->valor,
+                            'vale' => $request->vale,
+                            'recorrido' => $request->recorrido,
+                            'movil' => $request->movil,
+                            'chofer' => $request->chofer,
+                            'descuento' => $this->descuento($request->valor),
+                            'rut_cliente' => $request->rut,
+                            'nombres_apellidos' => $request->nombre,
+                            'codigo_validacion' => $request->codigo,
                         ],
                     ]);
 
                     $insert_3 = DB::table('resumen_movil')->insert([
-                        ['fecha' => $request->fecha,
-                        'movil' => $request->movil,
-                        'nro servicios' => '1',
-                        'total zulu' => $request->valor,
-                        'vale' => $request->vale,
-                        'recorrido' => $request->recorrido,
-                        'zulu' => $request->zulu,
-                        '%chofer' => $cal_porc_chofer,
-                        '%movil' => $cal_porc_movil,
+                        ['fecha' => date("Y-m-d H:i:s"),
+                            'movil' => $request->movil,
+                            'nro servicios' => '1',
+                            'total zulu' => $request->valor,
+                            'vale' => $request->vale,
+                            'recorrido' => $request->recorrido,
+                            'zulu' => $request->zulu,
+                            '%chofer' => $cal_porc_chofer,
+                            '%movil' => $cal_porc_movil,
+                            'rut_cliente' => $request->rut,
+                            'nombres_apellidos' => $request->nombre,
+                            'codigo_validacion' => $request->codigo,
                         ],
                     ]);
 
                     $insert_4 = DB::table('resumen_zulus_sin_1_5')->insert([
-                        ['fecha' => $request->fecha,
-                        'zulu' => $request->zulu,
-                        'nro servicios' => '1',
-                        'total zulu' => $request->valor,
-                        'vale' => $request->vale,
-                        'recorrido' => $request->recorrido,
-                        'movil' => $request->movil,
-                        'chofer' => $request->chofer,
+                        ['fecha' => date("Y-m-d H:i:s"),
+                            'zulu' => $request->zulu,
+                            'nro servicios' => '1',
+                            'total zulu' => $request->valor,
+                            'vale' => $request->vale,
+                            'recorrido' => $request->recorrido,
+                            'movil' => $request->movil,
+                            'chofer' => $request->chofer,
+                            'rut_cliente' => $request->rut,
+                            'nombres_apellidos' => $request->nombre,
+                            'codigo_validacion' => $request->codigo,
                         ],
                     ]);
 
@@ -543,21 +700,45 @@ class CompanyController extends Controller
                     ]);
 
                     $insert_6 = DB::table('pago_movil_1,5')->insert([
-                        ['fecha' => $request->fecha,
-                        'movil' => $request->movil,
-                        'vale' => $request->vale,
-                        'recorrido' => $request->recorrido,
-                        'nro servicios' => '1',
-                        'total zulu' => $request->valor,
-                        'zulu' => $request->zulu,
-                        'chofer' => $request->chofer,
-                        'descuento' => $this->descuento($request->valor),
-                        'ver' => '0',
+                        ['fecha' => date("Y-m-d H:i:s"),
+                            'movil' => $request->movil,
+                            'vale' => $request->vale,
+                            'recorrido' => $request->recorrido,
+                            'nro servicios' => '1',
+                            'total zulu' => $request->valor,
+                            'zulu' => $request->zulu,
+                            'chofer' => $request->chofer,
+                            'descuento' => $this->descuento($request->valor),
+                            'ver' => '0',
+                            'rut_cliente' => $request->rut,
+                            'nombres_apellidos' => $request->nombre,
+                            'codigo_validacion' => $request->codigo,
                         ],
                     ]);
 
+                    $resumen = DB::table('resumen_zulus')
+                                ->join('resumen_movil', 'resumen_zulus.vale', '=', 'resumen_movil.vale')
+                                ->select('resumen_movil.total zulu AS total', 'resumen_movil.%chofer AS pchofer', 'resumen_movil.%movil AS pmovil',
+                                         'resumen_movil.zulu AS zulu', 'resumen_movil.recorrido AS recorrido', 'resumen_movil.vale AS vale')
+                                ->where('resumen_zulus.chofer', $request->chofer)
+                                ->where('resumen_zulus.movil', $request->movil)
+                                ->where('resumen_zulus.fecha', 'LIKE', '%' . date('Y-m-d') . '%')
+                                ->get();
+
+                    foreach ($resumen as $item) {
+
+                        array_push($servicios, [
+                            'pchofer' => $item->pchofer,
+                            'pmovil' => $item->pmovil,
+                            'total' => $item->total,
+                            'vale' => $item->vale,
+                            'zulu' => $item->zulu,
+                            'recorrido' => $item->recorrido
+                        ]);
+                    }
+
                     if ($insert_1 && $insert_2 && $insert_3 && $insert_4 && $insert_5 && $insert_6) {
-                        return response()->json(['success' => true, 'msg' => 'Datos ingresados correctamente en la tabla clinica integral. Vale ingresado'], 200);
+                        return response()->json(['success' => true, 'servicios' => $servicios, 'msg' => 'Datos ingresados correctamente en la tabla clinica integral. Vale ingresado'], 200);
                     } else {
                         return response()->json(['error' => true], 200);
                     }
@@ -565,54 +746,66 @@ class CompanyController extends Controller
 
                     $insert_1 = DB::table('convenios mutual')->insert([
                         ['movil' => $request->movil,
-                        'chofer' => $request->chofer,
-                        'fecha' => $request->fecha,
-                        'vale' => $request->vale,
-                        'recorrido' => $request->recorrido,
-                        'final zulu' => $request->valor,
-                        'valor final' => $request->valor,
-                        'paciente' => $request->paciente,
-                        'run' => $request->run,
-                        'pmovil' => $cal_porc_movil,
-                        'pchofer' => $cal_porc_chofer,
+                            'chofer' => $request->chofer,
+                            'fecha' => date("Y-m-d H:i:s"),
+                            'vale' => $request->vale,
+                            'recorrido' => $request->recorrido,
+                            'final zulu' => $request->valor,
+                            'valor final' => $request->valor,
+                            'paciente' => $request->paciente,
+                            'run' => $request->run,
+                            'pmovil' => $cal_porc_movil,
+                            'pchofer' => $cal_porc_chofer,
+                            'rut_cliente' => $request->rut,
+                            'nombres_apellidos' => $request->nombre,
+                            'codigo_validacion' => $request->codigo,
                         ],
                     ]);
 
                     $insert_2 = DB::table('resumen_zulus')->insert([
-                        ['fecha' => $request->fecha,
-                        'zulu' => $request->zulu,
-                        'nro servicios' => '1',
-                        'total zulu' => $request->valor,
-                        'vale' => $request->vale,
-                        'recorrido' => $request->recorrido,
-                        'movil' => $request->movil,
-                        'chofer' => $request->chofer,
-                        'descuento' => $this->descuento($request->valor),
+                        ['fecha' => date("Y-m-d H:i:s"),
+                            'zulu' => $request->zulu,
+                            'nro servicios' => '1',
+                            'total zulu' => $request->valor,
+                            'vale' => $request->vale,
+                            'recorrido' => $request->recorrido,
+                            'movil' => $request->movil,
+                            'chofer' => $request->chofer,
+                            'descuento' => $this->descuento($request->valor),
+                            'rut_cliente' => $request->rut,
+                            'nombres_apellidos' => $request->nombre,
+                            'codigo_validacion' => $request->codigo,
                         ],
                     ]);
 
                     $insert_3 = DB::table('resumen_movil')->insert([
-                        ['fecha' => $request->fecha,
-                        'movil' => $request->movil,
-                        'nro servicios' => '1',
-                        'total zulu' => $request->valor,
-                        'vale' => $request->vale,
-                        'recorrido' => $request->recorrido,
-                        'zulu' => $request->zulu,
-                        '%chofer' => $cal_porc_chofer,
-                        '%movil' => $cal_porc_movil,
+                        ['fecha' => date("Y-m-d H:i:s"),
+                            'movil' => $request->movil,
+                            'nro servicios' => '1',
+                            'total zulu' => $request->valor,
+                            'vale' => $request->vale,
+                            'recorrido' => $request->recorrido,
+                            'zulu' => $request->zulu,
+                            '%chofer' => $cal_porc_chofer,
+                            '%movil' => $cal_porc_movil,
+                            'rut_cliente' => $request->rut,
+                            'nombres_apellidos' => $request->nombre,
+                            'codigo_validacion' => $request->codigo,
                         ],
                     ]);
 
                     $insert_4 = DB::table('resumen_zulus_sin_1_5')->insert([
-                        ['fecha' => $request->fecha,
-                        'zulu' => $request->zulu,
-                        'nro servicios' => '1',
-                        'total zulu' => $request->valor,
-                        'vale' => $request->vale,
-                        'recorrido' => $request->recorrido,
-                        'movil' => $request->movil,
-                        'chofer' => $request->chofer,
+                        ['fecha' => date("Y-m-d H:i:s"),
+                            'zulu' => $request->zulu,
+                            'nro servicios' => '1',
+                            'total zulu' => $request->valor,
+                            'vale' => $request->vale,
+                            'recorrido' => $request->recorrido,
+                            'movil' => $request->movil,
+                            'chofer' => $request->chofer,
+                            'rut_cliente' => $request->rut,
+                            'nombres_apellidos' => $request->nombre,
+                            'codigo_validacion' => $request->codigo,
                         ],
                     ]);
 
@@ -621,21 +814,45 @@ class CompanyController extends Controller
                     ]);
 
                     $insert_6 = DB::table('pago_movil_1,5')->insert([
-                        ['fecha' => $request->fecha,
-                        'movil' => $request->movil,
-                        'vale' => $request->vale,
-                        'recorrido' => $request->recorrido,
-                        'nro servicios' => '1',
-                        'total zulu' => $request->valor,
-                        'zulu' => $request->zulu,
-                        'chofer' => $request->chofer,
-                        'descuento' => $this->descuento($request->valor),
-                        'ver' => '0',
+                        ['fecha' => date("Y-m-d H:i:s"),
+                            'movil' => $request->movil,
+                            'vale' => $request->vale,
+                            'recorrido' => $request->recorrido,
+                            'nro servicios' => '1',
+                            'total zulu' => $request->valor,
+                            'zulu' => $request->zulu,
+                            'chofer' => $request->chofer,
+                            'descuento' => $this->descuento($request->valor),
+                            'ver' => '0',
+                            'rut_cliente' => $request->rut,
+                            'nombres_apellidos' => $request->nombre,
+                            'codigo_validacion' => $request->codigo,
                         ],
                     ]);
 
+                    $resumen = DB::table('resumen_zulus')
+                                ->join('resumen_movil', 'resumen_zulus.vale', '=', 'resumen_movil.vale')
+                                ->select('resumen_movil.total zulu AS total', 'resumen_movil.%chofer AS pchofer', 'resumen_movil.%movil AS pmovil',
+                                         'resumen_movil.zulu AS zulu', 'resumen_movil.recorrido AS recorrido', 'resumen_movil.vale AS vale')
+                                ->where('resumen_zulus.chofer', $request->chofer)
+                                ->where('resumen_zulus.movil', $request->movil)
+                                ->where('resumen_zulus.fecha', 'LIKE', '%' . date('Y-m-d') . '%')
+                                ->get();
+
+                    foreach ($resumen as $item) {
+
+                        array_push($servicios, [
+                            'pchofer' => $item->pchofer,
+                            'pmovil' => $item->pmovil,
+                            'total' => $item->total,
+                            'vale' => $item->vale,
+                            'zulu' => $item->zulu,
+                            'recorrido' => $item->recorrido
+                        ]);
+                    }
+
                     if ($insert_1 && $insert_2 && $insert_3 && $insert_4 && $insert_5 && $insert_6) {
-                        return response()->json(['success' => true, 'msg' => 'Datos ingresados correctamente en la tabla convenios mutual. Vale ingresado'], 200);
+                        return response()->json(['success' => true, 'servicios' => $servicios, 'msg' => 'Datos ingresados correctamente en la tabla convenios mutual. Vale ingresado'], 200);
                     } else {
                         return response()->json(['error' => true], 200);
                     }

@@ -2,6 +2,7 @@
     <input type="hidden" id="day" value="{{ date('Y-m-d') }}">
     <input type="hidden" name="run" id="run">
     <input type="hidden" name="paciente"  id="paciente">
+    <input type="hidden" name="nombre"  id="nombre">
     <div class="row" style="border: 2px solid #eee; padding:20px;">
         <div class="col-md-4">
           <div class="form-group row">
@@ -217,7 +218,6 @@
         </div>
     </div>
 </div>
-
 <div class="modal fade" id="modal_cliente" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-md">
       <div class="modal-content">
@@ -226,55 +226,47 @@
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
         </div>
         <div class="modal-body" style="background-color: #586973;">
-            <div class="text-center" id="spinner_cliente" style="margin-top:-10px; display:none;">
+            <div class="text-center" id="spinner_modal" style="margin-top:-10px; display:none;">
                 <div class="spinner-grow text-secondary" style="width: 3rem; height: 3rem;"  role="status">
                     <span class="sr-only">Loading...</span>
                 </div>
             </div>
-            <form class="forms-sample" name="form-cliente" id="form-cliente" method="POST">
-                <div class="col-md-12">
-                    <div class="form-group row">
-                        <div class="col-sm-12">
-                            <div class="alert alert-info" role="alert">
-                                <p>Escriba su R.U.T 15.400.400, tenga en cuenta los puntos.</p>
-                            </div>
-                            <div class="form-group">
-                                <label>R.U.T.</label>
-                                <div class="input-group">
-                                    <input type="text" class="form-control" name="rut" id="rut" placeholder="15.400.400" >
-                                    <div class="input-group-append">
-                                        <button class="btn btn-sm btn-primary" type="submit"><i class="mdi mdi-account-search"></i></button>
-                                    </div>
-                                </div>
-                            </div>
+            <div class="col-md-12">
+                <div class="form-group row">
+                    <div class="col-sm-12">
+                        <div class="alert alert-info" role="alert">
+                            <p>Escriba su R.U.T 15.400.400, tenga en cuenta los puntos.</p>
                         </div>
-                    </div>
-                    <div id="cliente" class=""></div>
-                </div>
-            </form>
-
-            <div id="cliente" class=""></div>
-
-            <form class="forms-sample" name="form-codigo" id="form-codigo" method="POST" style="display: none;">
-                <div class="col-md-12">
-                    <div class="form-group row">
-                        <div class="col-sm-12">
-                            <div class="alert alert-info" role="alert">
-                                <p>Escriba su codigo de validacion, tenga en cuenta que debe ser validado por el cliente para completar la operacion de registro del recorrido.</p>
-                            </div>
-                            <div class="form-group">
-                                <label>Código</label>
-                                <div class="input-group">
-                                    <input type="password" class="form-control" name="codigo" id="codigo" placeholder="xxxxxx" >
-                                    <div class="input-group-append">
-                                        <button class="btn btn-sm btn-primary" type="submit">Validar</button>
-                                    </div>
+                        <div class="form-group">
+                            <label>R.U.T.</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" name="rut" id="rut" placeholder="15.400.400" >
+                                <div class="input-group-append">
+                                    <button class="btn btn-sm btn-primary" type="button" onclick="cliente()"><i class="mdi mdi-account-search"></i></button>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </form>
+            </div>
+            <div class="col-md-12" id="form_codigo" style="display: none;">
+                <div class="form-group row">
+                    <div class="col-sm-12">
+                        <div class="alert alert-info" role="alert">
+                            <p id="cliente"></p>
+                        </div>
+                        <div class="form-group">
+                            <label>Código</label>
+                            <div class="input-group">
+                                <input type="password" class="form-control" name="codigo" id="codigo" placeholder="xxxxxx" >
+                                <div class="input-group-append">
+                                    <button class="btn btn-sm btn-primary" type="button" onclick="codigo()">Validar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
       </div>
     </div>
@@ -354,7 +346,6 @@
                 return false;
             }
         }); */
-
         const servicios = [];
 
         $("#form-proccess").submit(function( event ) {
@@ -376,159 +367,173 @@
         }else if(zulu=="MUTUAL DE SEGURIDAD" && paciente_select==""){
             toastr.error('Up! Error verifique, a seleccionado mutual de seguridad y en este proceso debe agregar un paciente', {timeOut: 10000});
         }else{
+            $("#spinner").fadeIn();
             $("#modal_cliente").modal('show');
-            $("#form-cliente").submit(function( event ) {
-                event.preventDefault();
-                var rut = $("#rut").val();
-                $("#spinner_cliente").fadeIn();
-                axios.post('{{ route('company.cliente')}}', {
-                    rut:rut
-                }).then(response => {
-                    if(response.data.success){
-                        $("#cliente").html(function () {
-                            var html = '';
-                            html +='<div class="alert alert-success" role="alert">';
-                                html +='<p>Cliente: '+response.data.cliente[0].rut+' '+response.data.cliente[0].nombres+'</p>';
-                            html +='</div>';
-                            return html;
-                        });
-                        $("#form-codigo").fadeIn();
-                        $("#spinner_cliente").fadeOut();
-
-                    }else{
-                        toastr.error('Up! Error buscando el R.U.T del cliente', {timeOut: 10000});
-                        $("#spinner_cliente").fadeOut();
-                    }
-                }).catch(e => {
-                    toastr.error('Up! Error '+e+'', {timeOut: 10000});
-                    $("#spinner_cliente").fadeOut();
-                    console.log(e);
-                });
-
-            });
-
-            $("#form-codigo").submit(function( event ) {
-                event.preventDefault();
-                var codigo = $("#codigo").val();
-                $("#spinner_cliente").fadeIn();
-                axios.post('{{ route('company.codigo')}}', {
-                    codigo:codigo
-                }).then(response => {
-                    if(response.data.success){
-                        $("#store_disabled").show();
-                        $("#store").hide();
-                        $("#spinner").fadeIn();
-                        $("#spinner_cliente").fadeOut();
-                        $("#modal_cliente").modal('hide');
-
-                            axios.post('{{ route('company.store')}}', {
-                                fecha:fecha,
-                                movil:movil,
-                                chofer:chofer,
-                                porcentaje:porcentaje,
-                                zulu:zulu,
-                                vale:vale,
-                                recorrido:recorrido,
-                                valor:valor,
-                                paciente:paciente,
-                                run:run
-                            }).then(response => {
-                                if(response.data.success){
-                                    toastr.success(''+response.data.msg+'', {timeOut: 10000});
-                                    $("#store_disabled").hide();
-                                    $("#store").show();
-                                    $("#spinner").fadeOut();
-                                    if(porcentaje==100){
-                                        pmovil = ((Number(valor)*(Number(porcentaje)))/100);
-                                        pchofer = 0;
-                                    }
-                                    if(porcentaje!=100){
-                                        pchofer = ((Number(valor)*(Number(porcentaje)))/100);
-                                        pmovil = Number(valor)-pchofer;
-                                    }
-
-                                    servicios.push(
-                                        {   vale: vale,
-                                            zulu: zulu,
-                                            recorrido: recorrido,
-                                            pchofer: pchofer,
-                                            pmovil: pmovil,
-                                            total: Number(valor)
-                                        }
-                                    );
-
-                                    var porc_chofer =   0;
-                                    var porc_movil  =   0;
-                                    var total_zulu  =   0;
-
-                                    $.each(servicios, function(i,item){
-
-                                        porc_chofer+=item.pchofer;
-                                        porc_movil+=item.pmovil;
-                                        total_zulu+=item.total;
-                                    });
-
-                                    var  format_pc = new Intl.NumberFormat("de-DE", {style: "currency", currency: "USD"}).format(porc_chofer);
-                                    var  format_pm = new Intl.NumberFormat("de-DE", {style: "currency", currency: "USD"}).format(porc_movil);
-                                    var  format_tz = new Intl.NumberFormat("de-DE", {style: "currency", currency: "USD"}).format(total_zulu);
-                                    $("#format_pc").html(''+format_pc+'');
-                                    $("#format_pm").html(''+format_pm+'');
-                                    $("#format_tz").html(''+format_tz+'');
-
-
-                                    $('#list_servicios').html(function(){
-                                        html = '';
-                                        $.each(servicios, function(i,item){
-                                            var  ft_pc = new Intl.NumberFormat("de-DE", {style: "currency", currency: "USD"}).format(item.pchofer);
-                                            var  ft_pm = new Intl.NumberFormat("de-DE", {style: "currency", currency: "USD"}).format(item.pmovil);
-                                            var  ft_tz = new Intl.NumberFormat("de-DE", {style: "currency", currency: "USD"}).format(item.total);
-                                            html += '<tr>';
-                                                html += '<td>'+item.vale+'</td>';
-                                                html += '<td>'+item.zulu+'</td>';
-                                                html += '<td>'+item.recorrido+'</td>';
-                                                html += '<td>'+ft_pc+'</td>';
-                                                html += '<td>'+ft_pm+'</td>';
-                                                html += '<td>'+ft_tz+'</td>';
-                                            html += '</tr>';
-                                        });
-                                        return html;
-                                    });
-                                    clear();
-                                    getChofer();
-                                }else{
-                                    toastr.error('Up! Error, no se ingresaron los datos correctamente. Intente nuevamente', {timeOut: 10000});
-                                    $("#store_disabled").hide();
-                                    $("#store").show();
-                                    $("#spinner").fadeOut();
-                                    clear();
-                                    getChofer();
-                                }
-                            }).catch(e => {
-                                toastr.error('Up! Error '+e+'', {timeOut: 10000});
-                                $("#store_disabled").hide();
-                                $("#store").show();
-                                $("#spinner").fadeOut();
-                                clear();
-                                getChofer();
-
-                                console.log(e);
-                            });
-                    }else{
-                        toastr.error('Up! Error buscando el codigo de validacion del cliente', {timeOut: 10000});
-                        $("#spinner_cliente").fadeOut();
-                    }
-                }).catch(e => {
-                    toastr.error('Up! Error '+e+'', {timeOut: 10000});
-                    $("#spinner_cliente").fadeOut();
-                    console.log(e);
-                });
-
-            });
+            $("#rut").val('');
+            $("#codigo").val('');
+            $("#form_codigo").hide();
+            cliente();
         }
 
         });
 
     });
+
+
+    function cliente(){
+        var rut = $("#rut").val();
+        $("#spinner").fadeOut();
+        if(rut!=""){
+            $("#spinner_modal").fadeIn();
+            axios.post('{{ route('company.cliente')}}', {
+                rut:rut
+            }).then(response => {
+                if(response.data.success){
+                    $("#cliente").val(response.data.cliente[0].nombres);
+                    $("#cliente").html(function () {
+                        var html = '';
+                            html +='<p>Escriba su codigo de validacion, tenga en cuenta que debe ser validado por el cliente <b>('+response.data.cliente[0].rut+' '+response.data.cliente[0].nombres+')</b> para completar la operacion de registro del recorrido.</p>';
+                        return html;
+                    });
+                    $("#form_codigo").fadeIn();
+                    $("#spinner_modal").fadeOut();
+
+                }else{
+                    toastr.error('Up! Error buscando el R.U.T del cliente', {timeOut: 10000});
+                    $("#spinner_modal").fadeOut();
+                    $("#form_codigo").fadeOut();
+                }
+            }).catch(e => {
+                toastr.error('Up! Error '+e+'', {timeOut: 10000});
+                $("#spinner_modal").fadeOut();
+                console.log(e);
+            });
+        }else{
+            toastr.error('Recuerde que el campo el R.U.T es obligatorio', {timeOut: 10000});
+        }
+    }
+
+    function codigo(){
+        var rut             = $("#rut").val();
+        var codigo          = $("#codigo").val();
+        var nombre          = $("#cliente").val();
+
+        var movil           = $("#movil").val();
+        var chofer          = $("#chofer_select").val();
+        var porcentaje      = $("#porcentaje").val();
+        var zulu            = $("#zulu").val();
+        var vale            = $("#vale").val();
+        var recorrido       = $("#recorrido").val();
+        var valor           = $("#valor").val();
+        var paciente_select = $("#paciente_select").val();
+        var paciente        = $("#paciente").val();
+        var run             = $("#run").val();
+
+        $("#spinner").fadeOut();
+        if(codigo!=""){
+            $("#spinner_modal").fadeIn();
+            axios.post('{{ route('company.codigo')}}', {
+                codigo:codigo,
+                rut:rut,
+            }).then(response => {
+                if(response.data.success){
+                        $("#store_disabled").show();
+                        $("#store").hide();
+                        $("#spinner").fadeIn();
+                        $("#spinner_modal").fadeOut();
+                        $("#modal_cliente").modal('hide');
+
+                        axios.post('{{ route('company.store')}}', {
+                            movil:movil,
+                            chofer:chofer,
+                            porcentaje:porcentaje,
+                            zulu:zulu,
+                            vale:vale,
+                            recorrido:recorrido,
+                            valor:valor,
+                            paciente:paciente,
+                            run:run,
+                            rut:rut,
+                            nombre: nombre,
+                            codigo: codigo
+                        }).then(response => {
+                            if(response.data.success){
+                                toastr.success(''+response.data.msg+'', {timeOut: 10000});
+                                $("#store_disabled").hide();
+                                $("#store").show();
+                                $("#spinner").fadeOut();
+
+                                var porc_chofer =   0;
+                                var porc_movil  =   0;
+                                var total_zulu  =   0;
+
+                                $.each(response.data.servicios, function(i,item){
+
+                                    porc_chofer+=item.pchofer;
+                                    porc_movil+=item.pmovil;
+                                    total_zulu+=item.total;
+                                });
+
+                                var  format_pc = new Intl.NumberFormat("de-DE", {style: "currency", currency: "USD"}).format(porc_chofer);
+                                var  format_pm = new Intl.NumberFormat("de-DE", {style: "currency", currency: "USD"}).format(porc_movil);
+                                var  format_tz = new Intl.NumberFormat("de-DE", {style: "currency", currency: "USD"}).format(total_zulu);
+                                $("#format_pc").html(''+format_pc+'');
+                                $("#format_pm").html(''+format_pm+'');
+                                $("#format_tz").html(''+format_tz+'');
+
+
+                                $('#list_servicios').html(function(){
+                                    html = '';
+                                    $.each(response.data.servicios, function(i,item){
+                                        var  ft_pc = new Intl.NumberFormat("de-DE", {style: "currency", currency: "USD"}).format(item.pchofer);
+                                        var  ft_pm = new Intl.NumberFormat("de-DE", {style: "currency", currency: "USD"}).format(item.pmovil);
+                                        var  ft_tz = new Intl.NumberFormat("de-DE", {style: "currency", currency: "USD"}).format(item.total);
+                                        html += '<tr>';
+                                            html += '<td>'+item.vale+'</td>';
+                                            html += '<td>'+item.zulu+'</td>';
+                                            html += '<td>'+item.recorrido+'</td>';
+                                            html += '<td>'+ft_pc+'</td>';
+                                            html += '<td>'+ft_pm+'</td>';
+                                            html += '<td>'+ft_tz+'</td>';
+                                        html += '</tr>';
+                                    });
+                                    return html;
+                                });
+                                clear();
+                                getChofer();
+                            }else{
+                                toastr.error('Up! Error, no se ingresaron los datos correctamente. Intente nuevamente', {timeOut: 10000});
+                                $("#store_disabled").hide();
+                                $("#store").show();
+                                $("#spinner").fadeOut();
+                                clear();
+                                getChofer();
+                            }
+                        }).catch(e => {
+                            toastr.error('Up! Error '+e+'', {timeOut: 10000});
+                            $("#store_disabled").hide();
+                            $("#store").show();
+                            $("#spinner").fadeOut();
+                            clear();
+                            getChofer();
+
+                            console.log(e);
+                        });
+                }else{
+                    toastr.error('Up! Error buscando el codigo de validacion del cliente', {timeOut: 10000});
+                    $("#spinner_modal").fadeOut();
+                }
+
+            }).catch(e => {
+                    toastr.error('Up! Error '+e+'', {timeOut: 10000});
+                    $("#spinner_modal").fadeOut();
+                    console.log(e);
+            });
+        }else{
+            toastr.error('Recuerde que el campo el codigo es obligatorio', {timeOut: 10000});
+            $("#spinner_modal").fadeOut();
+        }
+    }
 
     function getPacientes(){
         axios.post('{{ route('company.pacientes')}}', {
