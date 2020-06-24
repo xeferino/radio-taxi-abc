@@ -18,6 +18,39 @@
             </div>
           </a>
           <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list" aria-labelledby="profileDropdown">
+            <a class="dropdown-item preview-item">
+                <div class="preview-thumbnail">
+                    <div class="preview-icon bg-dark rounded-circle">
+                    <i class="mdi mdi-pound text-primary"></i>
+                    </div>
+                </div>
+                <div class="preview-item-content">
+                    <p class="preview-subject mb-1" id="conectado_rut"></p>
+                </div>
+            </a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item preview-item">
+                <div class="preview-thumbnail">
+                    <div class="preview-icon bg-dark rounded-circle">
+                    <i class="mdi mdi-percent text-primary"></i>
+                    </div>
+                </div>
+                <div class="preview-item-content">
+                    <p class="preview-subject mb-1" id="conectado_porc"></p>
+                </div>
+            </a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item preview-item">
+                <div class="preview-thumbnail">
+                    <div class="preview-icon bg-dark rounded-circle">
+                    <i class="mdi mdi-car text-primary"></i>
+                    </div>
+                </div>
+                <div class="preview-item-content">
+                    <p class="preview-subject mb-1" id="conectado_car"></p>
+                </div>
+            </a>
+            <div class="dropdown-divider"></div>
             <a href="{{route('logout')}}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="dropdown-item preview-item">
               <div class="preview-thumbnail">
                 <div class="preview-icon bg-dark rounded-circle">

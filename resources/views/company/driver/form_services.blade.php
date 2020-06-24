@@ -376,7 +376,6 @@
         }
 
         });
-
     });
 
 
@@ -437,12 +436,12 @@
                 rut:rut,
             }).then(response => {
                 if(response.data.success){
+                        toastr.success('Codigo validado exitosamente, guardando la informacion del recorrido', {timeOut: 5000});
                         $("#store_disabled").show();
                         $("#store").hide();
                         $("#spinner").fadeIn();
                         $("#spinner_modal").fadeOut();
                         $("#modal_cliente").modal('hide');
-
                         axios.post('{{ route('company.store')}}', {
                             movil:movil,
                             chofer:chofer,
@@ -587,10 +586,16 @@
     }
 
     function getChofer() {
+        $("#conectado_car").text('cargando...');
+        $("#conectado_rut").text('cargando...');
+        $("#conectado_porc").text('cargando...');
         axios.post('{{ route('company.chofer')}}', {
         }).then(response => {
             if(response.data.success){
                 $("#movil").val(response.data.chofer);
+                $("#conectado_car").text(response.data.chofer);
+                $("#conectado_rut").text({{ Auth::user()->rut }});
+                $("#conectado_porc").text({{ Auth::user()->porcentaje }});
                 getPorcentaje(response.data.movil);
                 $("#chofer_select").val(response.data.movil);
                 getVale();
