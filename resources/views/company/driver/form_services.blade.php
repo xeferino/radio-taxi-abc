@@ -307,7 +307,7 @@
 
         $('#chofer').on('change', function() {
             if($("#conectado").val().trim() != this.value.trim()){
-                toastr.error('Atención no esta permitido cambiar de conductor, solo puede hacer registros del coductor logueado.', {timeOut: 15000});
+                toastr.error('Atención no esta permitido cambiar de conductor, solo puede hacer registros del conductor logueado.', {timeOut: 15000});
                 getChofer();
             }else{
                 $("#chofer_select").val(this.value);
