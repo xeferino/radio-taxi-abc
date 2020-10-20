@@ -169,6 +169,7 @@ class CompanyController extends Controller
 
     public function store(Request $request)
     {
+
         $servicios =  array ();
         switch ($request->porcentaje) {
             case ($request->porcentaje == 100):
@@ -186,9 +187,14 @@ class CompanyController extends Controller
                             'recorrido' => $request->recorrido,
                             'final zulu' => $request->valor,
                             '%movil' => $cal_porc_movil,
-                            'rut_cliente' => $request->rut,
-                            'nombres_apellidos' => $request->nombre,
-                            'codigo_validacion' => $request->codigo,
+                            'rut_cliente' => $request->rut_cliente0,
+                            'nombres_apellidos' => $request->nombres_apellidos0,
+                            'rut_cliente1' => $request->rut_cliente1,
+                            'nombres_apellidos1' => $request->nombres_apellidos1,
+                            'rut_cliente2' => $request->rut_cliente2,
+                            'nombres_apellidos2' => $request->nombres_apellidos2,
+                            'rut_cliente3' => $request->rut_cliente3,
+                            'nombres_apellidos3' => $request->nombres_apellidos3
                         ],
                     ]);
 
@@ -202,9 +208,14 @@ class CompanyController extends Controller
                             'movil' => $request->movil,
                             'chofer' => $request->chofer,
                             'descuento' => $this->descuento($request->valor),
-                            'rut_cliente' => $request->rut,
-                            'nombres_apellidos' => $request->nombre,
-                            'codigo_validacion' => $request->codigo,
+                            'rut_cliente' => $request->rut_cliente0,
+                            'nombres_apellidos' => $request->nombres_apellidos0,
+                            'rut_cliente1' => $request->rut_cliente1,
+                            'nombres_apellidos1' => $request->nombres_apellidos1,
+                            'rut_cliente2' => $request->rut_cliente2,
+                            'nombres_apellidos2' => $request->nombres_apellidos2,
+                            'rut_cliente3' => $request->rut_cliente3,
+                            'nombres_apellidos3' => $request->nombres_apellidos3
                         ],
                     ]);
 
@@ -217,9 +228,14 @@ class CompanyController extends Controller
                             'recorrido' => $request->recorrido,
                             'zulu' => $request->zulu,
                             '%movil' => $cal_porc_movil,
-                            'rut_cliente' => $request->rut,
-                            'nombres_apellidos' => $request->nombre,
-                            'codigo_validacion' => $request->codigo,
+                            'rut_cliente' => $request->rut_cliente0,
+                            'nombres_apellidos' => $request->nombres_apellidos0,
+                            'rut_cliente1' => $request->rut_cliente1,
+                            'nombres_apellidos1' => $request->nombres_apellidos1,
+                            'rut_cliente2' => $request->rut_cliente2,
+                            'nombres_apellidos2' => $request->nombres_apellidos2,
+                            'rut_cliente3' => $request->rut_cliente3,
+                            'nombres_apellidos3' => $request->nombres_apellidos3
                         ],
                     ]);
 
@@ -232,9 +248,14 @@ class CompanyController extends Controller
                             'recorrido' => $request->recorrido,
                             'movil' => $request->movil,
                             'chofer' => $request->chofer,
-                            'rut_cliente' => $request->rut,
-                            'nombres_apellidos' => $request->nombre,
-                            'codigo_validacion' => $request->codigo,
+                            'rut_cliente' => $request->rut_cliente0,
+                            'nombres_apellidos' => $request->nombres_apellidos0,
+                            'rut_cliente1' => $request->rut_cliente1,
+                            'nombres_apellidos1' => $request->nombres_apellidos1,
+                            'rut_cliente2' => $request->rut_cliente2,
+                            'nombres_apellidos2' => $request->nombres_apellidos2,
+                            'rut_cliente3' => $request->rut_cliente3,
+                            'nombres_apellidos3' => $request->nombres_apellidos3
                         ],
                     ]);
 
@@ -253,9 +274,14 @@ class CompanyController extends Controller
                             'chofer' => $request->chofer,
                             'descuento' => $this->descuento($request->valor),
                             'ver' => '0',
-                            'rut_cliente' => $request->rut,
-                            'nombres_apellidos' => $request->nombre,
-                            'codigo_validacion' => $request->codigo,
+                            'rut_cliente' => $request->rut_cliente0,
+                            'nombres_apellidos' => $request->nombres_apellidos0,
+                            'rut_cliente1' => $request->rut_cliente1,
+                            'nombres_apellidos1' => $request->nombres_apellidos1,
+                            'rut_cliente2' => $request->rut_cliente2,
+                            'nombres_apellidos2' => $request->nombres_apellidos2,
+                            'rut_cliente3' => $request->rut_cliente3,
+                            'nombres_apellidos3' => $request->nombres_apellidos3
                         ],
                     ]);
 
@@ -298,9 +324,14 @@ class CompanyController extends Controller
                             'valor final' => $request->valor,
                             'pchofer' => $request->valor,
                             'pmovil' => '0',
-                            'rut_cliente' => $request->rut,
-                            'nombres_apellidos' => $request->nombre,
-                            'codigo_validacion' => $request->codigo,
+                            'rut_cliente' => $request->rut_cliente0,
+                            'nombres_apellidos' => $request->nombres_apellidos0,
+                            'rut_cliente1' => $request->rut_cliente1,
+                            'nombres_apellidos1' => $request->nombres_apellidos1,
+                            'rut_cliente2' => $request->rut_cliente2,
+                            'nombres_apellidos2' => $request->nombres_apellidos2,
+                            'rut_cliente3' => $request->rut_cliente3,
+                            'nombres_apellidos3' => $request->nombres_apellidos3
                         ],
                     ]);
 
@@ -314,9 +345,14 @@ class CompanyController extends Controller
                             'movil' => $request->movil,
                             'chofer' => $request->chofer,
                             'descuento' => $this->descuento($request->valor),
-                            'rut_cliente' => $request->rut,
-                            'nombres_apellidos' => $request->nombre,
-                            'codigo_validacion' => $request->codigo,
+                            'rut_cliente' => $request->rut_cliente0,
+                            'nombres_apellidos' => $request->nombres_apellidos0,
+                            'rut_cliente1' => $request->rut_cliente1,
+                            'nombres_apellidos1' => $request->nombres_apellidos1,
+                            'rut_cliente2' => $request->rut_cliente2,
+                            'nombres_apellidos2' => $request->nombres_apellidos2,
+                            'rut_cliente3' => $request->rut_cliente3,
+                            'nombres_apellidos3' => $request->nombres_apellidos3
                         ],
                     ]);
 
@@ -329,9 +365,14 @@ class CompanyController extends Controller
                             'recorrido' => $request->recorrido,
                             'zulu' => $request->zulu,
                             '%movil' => $cal_porc_movil,
-                            'rut_cliente' => $request->rut,
-                            'nombres_apellidos' => $request->nombre,
-                            'codigo_validacion' => $request->codigo,
+                            'rut_cliente' => $request->rut_cliente0,
+                            'nombres_apellidos' => $request->nombres_apellidos0,
+                            'rut_cliente1' => $request->rut_cliente1,
+                            'nombres_apellidos1' => $request->nombres_apellidos1,
+                            'rut_cliente2' => $request->rut_cliente2,
+                            'nombres_apellidos2' => $request->nombres_apellidos2,
+                            'rut_cliente3' => $request->rut_cliente3,
+                            'nombres_apellidos3' => $request->nombres_apellidos3
                         ],
                     ]);
 
@@ -344,9 +385,14 @@ class CompanyController extends Controller
                             'recorrido' => $request->recorrido,
                             'movil' => $request->movil,
                             'chofer' => $request->chofer,
-                            'rut_cliente' => $request->rut,
-                            'nombres_apellidos' => $request->nombre,
-                            'codigo_validacion' => $request->codigo,
+                            'rut_cliente' => $request->rut_cliente0,
+                            'nombres_apellidos' => $request->nombres_apellidos0,
+                            'rut_cliente1' => $request->rut_cliente1,
+                            'nombres_apellidos1' => $request->nombres_apellidos1,
+                            'rut_cliente2' => $request->rut_cliente2,
+                            'nombres_apellidos2' => $request->nombres_apellidos2,
+                            'rut_cliente3' => $request->rut_cliente3,
+                            'nombres_apellidos3' => $request->nombres_apellidos3
                         ],
                     ]);
 
@@ -365,9 +411,14 @@ class CompanyController extends Controller
                             'chofer' => $request->chofer,
                             'descuento' => $this->descuento($request->valor),
                             'ver' => '0',
-                            'rut_cliente' => $request->rut,
-                            'nombres_apellidos' => $request->nombre,
-                            'codigo_validacion' => $request->codigo,
+                            'rut_cliente' => $request->rut_cliente0,
+                            'nombres_apellidos' => $request->nombres_apellidos0,
+                            'rut_cliente1' => $request->rut_cliente1,
+                            'nombres_apellidos1' => $request->nombres_apellidos1,
+                            'rut_cliente2' => $request->rut_cliente2,
+                            'nombres_apellidos2' => $request->nombres_apellidos2,
+                            'rut_cliente3' => $request->rut_cliente3,
+                            'nombres_apellidos3' => $request->nombres_apellidos3
                         ],
                     ]);
 
@@ -410,9 +461,14 @@ class CompanyController extends Controller
                             'paciente' => $request->paciente,
                             'run' => $request->run,
                             'pmovil' => $cal_porc_movil,
-                            'rut_cliente' => $request->rut,
-                            'nombres_apellidos' => $request->nombre,
-                            'codigo_validacion' => $request->codigo,
+                            'rut_cliente' => $request->rut_cliente0,
+                            'nombres_apellidos' => $request->nombres_apellidos0,
+                            'rut_cliente1' => $request->rut_cliente1,
+                            'nombres_apellidos1' => $request->nombres_apellidos1,
+                            'rut_cliente2' => $request->rut_cliente2,
+                            'nombres_apellidos2' => $request->nombres_apellidos2,
+                            'rut_cliente3' => $request->rut_cliente3,
+                            'nombres_apellidos3' => $request->nombres_apellidos3
                         ],
                     ]);
 
@@ -426,9 +482,14 @@ class CompanyController extends Controller
                             'movil' => $request->movil,
                             'chofer' => $request->chofer,
                             'descuento' => $this->descuento($request->valor),
-                            'rut_cliente' => $request->rut,
-                            'nombres_apellidos' => $request->nombre,
-                            'codigo_validacion' => $request->codigo,
+                            'rut_cliente' => $request->rut_cliente0,
+                            'nombres_apellidos' => $request->nombres_apellidos0,
+                            'rut_cliente1' => $request->rut_cliente1,
+                            'nombres_apellidos1' => $request->nombres_apellidos1,
+                            'rut_cliente2' => $request->rut_cliente2,
+                            'nombres_apellidos2' => $request->nombres_apellidos2,
+                            'rut_cliente3' => $request->rut_cliente3,
+                            'nombres_apellidos3' => $request->nombres_apellidos3
                         ],
                     ]);
 
@@ -443,7 +504,6 @@ class CompanyController extends Controller
                             '%movil' => $cal_porc_movil,
                             'rut_cliente' => $request->rut,
                             'nombres_apellidos' => $request->nombre,
-                            'codigo_validacion' => $request->codigo,
                         ],
                     ]);
 
@@ -456,9 +516,14 @@ class CompanyController extends Controller
                             'recorrido' => $request->recorrido,
                             'movil' => $request->movil,
                             'chofer' => $request->chofer,
-                            'rut_cliente' => $request->rut,
-                            'nombres_apellidos' => $request->nombre,
-                            'codigo_validacion' => $request->codigo,
+                            'rut_cliente' => $request->rut_cliente0,
+                            'nombres_apellidos' => $request->nombres_apellidos0,
+                            'rut_cliente1' => $request->rut_cliente1,
+                            'nombres_apellidos1' => $request->nombres_apellidos1,
+                            'rut_cliente2' => $request->rut_cliente2,
+                            'nombres_apellidos2' => $request->nombres_apellidos2,
+                            'rut_cliente3' => $request->rut_cliente3,
+                            'nombres_apellidos3' => $request->nombres_apellidos3
                         ],
                     ]);
 
@@ -477,9 +542,14 @@ class CompanyController extends Controller
                             'chofer' => $request->chofer,
                             'descuento' => $this->descuento($request->valor),
                             'ver' => '0',
-                            'rut_cliente' => $request->rut,
-                            'nombres_apellidos' => $request->nombre,
-                            'codigo_validacion' => $request->codigo,
+                            'rut_cliente' => $request->rut_cliente0,
+                            'nombres_apellidos' => $request->nombres_apellidos0,
+                            'rut_cliente1' => $request->rut_cliente1,
+                            'nombres_apellidos1' => $request->nombres_apellidos1,
+                            'rut_cliente2' => $request->rut_cliente2,
+                            'nombres_apellidos2' => $request->nombres_apellidos2,
+                            'rut_cliente3' => $request->rut_cliente3,
+                            'nombres_apellidos3' => $request->nombres_apellidos3
                         ],
                     ]);
 
@@ -529,9 +599,14 @@ class CompanyController extends Controller
                             'final zulu' => $request->valor,
                             '%chofer' => $cal_porc_chofer,
                             '%movil' => $cal_porc_movil,
-                            'rut_cliente' => $request->rut,
-                            'nombres_apellidos' => $request->nombre,
-                            'codigo_validacion' => $request->codigo,
+                            'rut_cliente' => $request->rut_cliente0,
+                            'nombres_apellidos' => $request->nombres_apellidos0,
+                            'rut_cliente1' => $request->rut_cliente1,
+                            'nombres_apellidos1' => $request->nombres_apellidos1,
+                            'rut_cliente2' => $request->rut_cliente2,
+                            'nombres_apellidos2' => $request->nombres_apellidos2,
+                            'rut_cliente3' => $request->rut_cliente3,
+                            'nombres_apellidos3' => $request->nombres_apellidos3
                         ],
                     ]);
 
@@ -545,9 +620,14 @@ class CompanyController extends Controller
                             'movil' => $request->movil,
                             'chofer' => $request->chofer,
                             'descuento' => $this->descuento($request->valor),
-                            'rut_cliente' => $request->rut,
-                            'nombres_apellidos' => $request->nombre,
-                            'codigo_validacion' => $request->codigo,
+                            'rut_cliente' => $request->rut_cliente0,
+                            'nombres_apellidos' => $request->nombres_apellidos0,
+                            'rut_cliente1' => $request->rut_cliente1,
+                            'nombres_apellidos1' => $request->nombres_apellidos1,
+                            'rut_cliente2' => $request->rut_cliente2,
+                            'nombres_apellidos2' => $request->nombres_apellidos2,
+                            'rut_cliente3' => $request->rut_cliente3,
+                            'nombres_apellidos3' => $request->nombres_apellidos3
                         ],
                     ]);
 
@@ -561,9 +641,14 @@ class CompanyController extends Controller
                             'zulu' => $request->zulu,
                             '%chofer' => $cal_porc_chofer,
                             '%movil' => $cal_porc_movil,
-                            'rut_cliente' => $request->rut,
-                            'nombres_apellidos' => $request->nombre,
-                            'codigo_validacion' => $request->codigo,
+                            'rut_cliente' => $request->rut_cliente0,
+                            'nombres_apellidos' => $request->nombres_apellidos0,
+                            'rut_cliente1' => $request->rut_cliente1,
+                            'nombres_apellidos1' => $request->nombres_apellidos1,
+                            'rut_cliente2' => $request->rut_cliente2,
+                            'nombres_apellidos2' => $request->nombres_apellidos2,
+                            'rut_cliente3' => $request->rut_cliente3,
+                            'nombres_apellidos3' => $request->nombres_apellidos3
                         ],
                     ]);
 
@@ -576,9 +661,14 @@ class CompanyController extends Controller
                             'recorrido' => $request->recorrido,
                             'movil' => $request->movil,
                             'chofer' => $request->chofer,
-                            'rut_cliente' => $request->rut,
-                            'nombres_apellidos' => $request->nombre,
-                            'codigo_validacion' => $request->codigo,
+                            'rut_cliente' => $request->rut_cliente0,
+                            'nombres_apellidos' => $request->nombres_apellidos0,
+                            'rut_cliente1' => $request->rut_cliente1,
+                            'nombres_apellidos1' => $request->nombres_apellidos1,
+                            'rut_cliente2' => $request->rut_cliente2,
+                            'nombres_apellidos2' => $request->nombres_apellidos2,
+                            'rut_cliente3' => $request->rut_cliente3,
+                            'nombres_apellidos3' => $request->nombres_apellidos3
                         ],
                     ]);
 
@@ -597,9 +687,14 @@ class CompanyController extends Controller
                             'chofer' => $request->chofer,
                             'descuento' => $this->descuento($request->valor),
                             'ver' => '0',
-                            'rut_cliente' => $request->rut,
-                            'nombres_apellidos' => $request->nombre,
-                            'codigo_validacion' => $request->codigo,
+                            'rut_cliente' => $request->rut_cliente0,
+                            'nombres_apellidos' => $request->nombres_apellidos0,
+                            'rut_cliente1' => $request->rut_cliente1,
+                            'nombres_apellidos1' => $request->nombres_apellidos1,
+                            'rut_cliente2' => $request->rut_cliente2,
+                            'nombres_apellidos2' => $request->nombres_apellidos2,
+                            'rut_cliente3' => $request->rut_cliente3,
+                            'nombres_apellidos3' => $request->nombres_apellidos3
                         ],
                     ]);
 
@@ -642,9 +737,14 @@ class CompanyController extends Controller
                             'valor final' => $request->valor,
                             'pchofer' => $request->valor,
                             'pmovil' => $cal_porc_movil,
-                            'rut_cliente' => $request->rut,
-                            'nombres_apellidos' => $request->nombre,
-                            'codigo_validacion' => $request->codigo,
+                            'rut_cliente' => $request->rut_cliente0,
+                            'nombres_apellidos' => $request->nombres_apellidos0,
+                            'rut_cliente1' => $request->rut_cliente1,
+                            'nombres_apellidos1' => $request->nombres_apellidos1,
+                            'rut_cliente2' => $request->rut_cliente2,
+                            'nombres_apellidos2' => $request->nombres_apellidos2,
+                            'rut_cliente3' => $request->rut_cliente3,
+                            'nombres_apellidos3' => $request->nombres_apellidos3
                         ],
                     ]);
 
@@ -658,9 +758,14 @@ class CompanyController extends Controller
                             'movil' => $request->movil,
                             'chofer' => $request->chofer,
                             'descuento' => $this->descuento($request->valor),
-                            'rut_cliente' => $request->rut,
-                            'nombres_apellidos' => $request->nombre,
-                            'codigo_validacion' => $request->codigo,
+                            'rut_cliente' => $request->rut_cliente0,
+                            'nombres_apellidos' => $request->nombres_apellidos0,
+                            'rut_cliente1' => $request->rut_cliente1,
+                            'nombres_apellidos1' => $request->nombres_apellidos1,
+                            'rut_cliente2' => $request->rut_cliente2,
+                            'nombres_apellidos2' => $request->nombres_apellidos2,
+                            'rut_cliente3' => $request->rut_cliente3,
+                            'nombres_apellidos3' => $request->nombres_apellidos3
                         ],
                     ]);
 
@@ -674,9 +779,14 @@ class CompanyController extends Controller
                             'zulu' => $request->zulu,
                             '%chofer' => $cal_porc_chofer,
                             '%movil' => $cal_porc_movil,
-                            'rut_cliente' => $request->rut,
-                            'nombres_apellidos' => $request->nombre,
-                            'codigo_validacion' => $request->codigo,
+                            'rut_cliente' => $request->rut_cliente0,
+                            'nombres_apellidos' => $request->nombres_apellidos0,
+                            'rut_cliente1' => $request->rut_cliente1,
+                            'nombres_apellidos1' => $request->nombres_apellidos1,
+                            'rut_cliente2' => $request->rut_cliente2,
+                            'nombres_apellidos2' => $request->nombres_apellidos2,
+                            'rut_cliente3' => $request->rut_cliente3,
+                            'nombres_apellidos3' => $request->nombres_apellidos3
                         ],
                     ]);
 
@@ -689,9 +799,14 @@ class CompanyController extends Controller
                             'recorrido' => $request->recorrido,
                             'movil' => $request->movil,
                             'chofer' => $request->chofer,
-                            'rut_cliente' => $request->rut,
-                            'nombres_apellidos' => $request->nombre,
-                            'codigo_validacion' => $request->codigo,
+                            'rut_cliente' => $request->rut_cliente0,
+                            'nombres_apellidos' => $request->nombres_apellidos0,
+                            'rut_cliente1' => $request->rut_cliente1,
+                            'nombres_apellidos1' => $request->nombres_apellidos1,
+                            'rut_cliente2' => $request->rut_cliente2,
+                            'nombres_apellidos2' => $request->nombres_apellidos2,
+                            'rut_cliente3' => $request->rut_cliente3,
+                            'nombres_apellidos3' => $request->nombres_apellidos3
                         ],
                     ]);
 
@@ -710,9 +825,14 @@ class CompanyController extends Controller
                             'chofer' => $request->chofer,
                             'descuento' => $this->descuento($request->valor),
                             'ver' => '0',
-                            'rut_cliente' => $request->rut,
-                            'nombres_apellidos' => $request->nombre,
-                            'codigo_validacion' => $request->codigo,
+                            'rut_cliente' => $request->rut_cliente0,
+                            'nombres_apellidos' => $request->nombres_apellidos0,
+                            'rut_cliente1' => $request->rut_cliente1,
+                            'nombres_apellidos1' => $request->nombres_apellidos1,
+                            'rut_cliente2' => $request->rut_cliente2,
+                            'nombres_apellidos2' => $request->nombres_apellidos2,
+                            'rut_cliente3' => $request->rut_cliente3,
+                            'nombres_apellidos3' => $request->nombres_apellidos3
                         ],
                     ]);
 
@@ -756,9 +876,14 @@ class CompanyController extends Controller
                             'run' => $request->run,
                             'pmovil' => $cal_porc_movil,
                             'pchofer' => $cal_porc_chofer,
-                            'rut_cliente' => $request->rut,
-                            'nombres_apellidos' => $request->nombre,
-                            'codigo_validacion' => $request->codigo,
+                            'rut_cliente' => $request->rut_cliente0,
+                            'nombres_apellidos' => $request->nombres_apellidos0,
+                            'rut_cliente1' => $request->rut_cliente1,
+                            'nombres_apellidos1' => $request->nombres_apellidos1,
+                            'rut_cliente2' => $request->rut_cliente2,
+                            'nombres_apellidos2' => $request->nombres_apellidos2,
+                            'rut_cliente3' => $request->rut_cliente3,
+                            'nombres_apellidos3' => $request->nombres_apellidos3
                         ],
                     ]);
 
@@ -772,9 +897,14 @@ class CompanyController extends Controller
                             'movil' => $request->movil,
                             'chofer' => $request->chofer,
                             'descuento' => $this->descuento($request->valor),
-                            'rut_cliente' => $request->rut,
-                            'nombres_apellidos' => $request->nombre,
-                            'codigo_validacion' => $request->codigo,
+                            'rut_cliente' => $request->rut_cliente0,
+                            'nombres_apellidos' => $request->nombres_apellidos0,
+                            'rut_cliente1' => $request->rut_cliente1,
+                            'nombres_apellidos1' => $request->nombres_apellidos1,
+                            'rut_cliente2' => $request->rut_cliente2,
+                            'nombres_apellidos2' => $request->nombres_apellidos2,
+                            'rut_cliente3' => $request->rut_cliente3,
+                            'nombres_apellidos3' => $request->nombres_apellidos3
                         ],
                     ]);
 
@@ -788,9 +918,14 @@ class CompanyController extends Controller
                             'zulu' => $request->zulu,
                             '%chofer' => $cal_porc_chofer,
                             '%movil' => $cal_porc_movil,
-                            'rut_cliente' => $request->rut,
-                            'nombres_apellidos' => $request->nombre,
-                            'codigo_validacion' => $request->codigo,
+                            'rut_cliente' => $request->rut_cliente0,
+                            'nombres_apellidos' => $request->nombres_apellidos0,
+                            'rut_cliente1' => $request->rut_cliente1,
+                            'nombres_apellidos1' => $request->nombres_apellidos1,
+                            'rut_cliente2' => $request->rut_cliente2,
+                            'nombres_apellidos2' => $request->nombres_apellidos2,
+                            'rut_cliente3' => $request->rut_cliente3,
+                            'nombres_apellidos3' => $request->nombres_apellidos3
                         ],
                     ]);
 
@@ -803,9 +938,14 @@ class CompanyController extends Controller
                             'recorrido' => $request->recorrido,
                             'movil' => $request->movil,
                             'chofer' => $request->chofer,
-                            'rut_cliente' => $request->rut,
-                            'nombres_apellidos' => $request->nombre,
-                            'codigo_validacion' => $request->codigo,
+                            'rut_cliente' => $request->rut_cliente0,
+                            'nombres_apellidos' => $request->nombres_apellidos0,
+                            'rut_cliente1' => $request->rut_cliente1,
+                            'nombres_apellidos1' => $request->nombres_apellidos1,
+                            'rut_cliente2' => $request->rut_cliente2,
+                            'nombres_apellidos2' => $request->nombres_apellidos2,
+                            'rut_cliente3' => $request->rut_cliente3,
+                            'nombres_apellidos3' => $request->nombres_apellidos3
                         ],
                     ]);
 
@@ -824,9 +964,14 @@ class CompanyController extends Controller
                             'chofer' => $request->chofer,
                             'descuento' => $this->descuento($request->valor),
                             'ver' => '0',
-                            'rut_cliente' => $request->rut,
-                            'nombres_apellidos' => $request->nombre,
-                            'codigo_validacion' => $request->codigo,
+                            'rut_cliente' => $request->rut_cliente0,
+                            'nombres_apellidos' => $request->nombres_apellidos0,
+                            'rut_cliente1' => $request->rut_cliente1,
+                            'nombres_apellidos1' => $request->nombres_apellidos1,
+                            'rut_cliente2' => $request->rut_cliente2,
+                            'nombres_apellidos2' => $request->nombres_apellidos2,
+                            'rut_cliente3' => $request->rut_cliente3,
+                            'nombres_apellidos3' => $request->nombres_apellidos3
                         ],
                     ]);
 
