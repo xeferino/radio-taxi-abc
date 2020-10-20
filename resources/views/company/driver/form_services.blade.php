@@ -544,21 +544,22 @@
                         total_zulu+=item.total;
                     });
 
-                    var  format_pc = new Intl.NumberFormat("de-DE", {style: "currency", currency: "USD"}).format(porc_chofer);
-                    var  format_pm = new Intl.NumberFormat("de-DE", {style: "currency", currency: "USD"}).format(porc_movil);
-                    var  format_tz = new Intl.NumberFormat("de-DE", {style: "currency", currency: "USD"}).format(total_zulu);
+                    var  format_pc = number_format(porc_chofer, '2', ',', '.');
+                    var  format_pm = number_format(porc_movil, '2', ',', '.');
+                    var  format_tz = number_format(total_zulu, '2', ',', '.');
 
-                    $("#format_pc").html(format_pc);
-                    $("#format_pm").html(format_pm);
-                    $("#format_tz").html(format_tz);
+
+                    $("#format_pc").html(format_pc+' $');
+                    $("#format_pm").html(format_pm+' $');
+                    $("#format_tz").html(format_tz+' $');
 
 
                     $('#list_servicios').html(function(){
                         html = '';
                         $.each(response.data.servicios, function(i,item){
-                            var  ft_pc = new Intl.NumberFormat("de-DE", {style: "currency", currency: "USD"}).format(item.pchofer);
-                            var  ft_pm = new Intl.NumberFormat("de-DE", {style: "currency", currency: "USD"}).format(item.pmovil);
-                            var  ft_tz = new Intl.NumberFormat("de-DE", {style: "currency", currency: "USD"}).format(item.total);
+                            var  ft_pc = number_format(item.pchofer, '2', ',', '.')+' $';
+                            var  ft_pm = number_format(item.pmovil, '2', ',', '.')+' $';
+                            var  ft_tz = number_format(item.total, '2', ',', '.')+' $';
                             html += '<tr>';
                                 html += '<td>'+item.vale+'</td>';
                                 html += '<td>'+item.zulu+'</td>';
@@ -600,6 +601,37 @@
 
     });
 
+    /**
+     *  Formatear un número
+     *
+     *  @param {decimal}    Número a formatear
+     *  @param {integer}    Cantidad de decimales
+     *  @param {string}     Signo de decimales
+     *  @param {string}     Signo separador de miles
+     */
+    function number_format(number, decimals, decPoint, thousandsSep) {
+        number = (number + '').replace(/[^0-9+\-Ee.]/g, '')
+        var n = !isFinite(+number) ? 0 : +number
+        var prec = !isFinite(+decimals) ? 0 : Math.abs(decimals)
+        var sep = (typeof thousandsSep === 'undefined') ? ',' : thousandsSep
+        var dec = (typeof decPoint === 'undefined') ? '.' : decPoint
+        var s = ''
+        var toFixedFix = function (n, prec) {
+            var k = Math.pow(10, prec)
+            return '' + (Math.round(n * k) / k)
+            .toFixed(prec)
+        }
+        // @todo: for IE parseFloat(0.55).toFixed(0) = 0;
+        s = (prec ? toFixedFix(n, prec) : '' + Math.round(n)).split('.')
+        if (s[0].length > 3) {
+            s[0] = s[0].replace(/\B(?=(?:\d{3})+(?!\d))/g, sep)
+        }
+        if ((s[1] || '').length < prec) {
+            s[1] = s[1] || ''
+            s[1] += new Array(prec - s[1].length + 1).join('0')
+        }
+        return s.join(dec)
+    }
 
     function cliente(){
         var rut = $("#rut").val();
