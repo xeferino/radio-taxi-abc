@@ -533,26 +533,13 @@
                     $("#spinner_modal").fadeOut();
                     $("#modal_cliente").modal('hide');
 
-                    var porc_chofer =   0;
-                    var porc_movil  =   0;
-                    var total_zulu  =   0;
-
-                    $.each(response.data.servicios, function(i,item){
-
-                        porc_chofer+=item.pchofer;
-                        porc_movil+=item.pmovil;
-                        total_zulu+=item.total;
-                    });
-
-                    var  format_pc = number_format(porc_chofer, '2', ',', '.');
-                    var  format_pm = number_format(porc_movil, '2', ',', '.');
-                    var  format_tz = number_format(total_zulu, '2', ',', '.');
-
+                    var  format_pc = number_format(response.data.porc_chofer, '2', ',', '.');
+                    var  format_pm = number_format(response.data.porc_movil, '2', ',', '.');
+                    var  format_tz = number_format(response.data.total_zulu, '2', ',', '.');
 
                     $("#format_pc").html(format_pc+' $');
                     $("#format_pm").html(format_pm+' $');
                     $("#format_tz").html(format_tz+' $');
-
 
                     $('#list_servicios').html(function(){
                         html = '';

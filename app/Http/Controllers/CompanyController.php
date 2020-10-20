@@ -293,9 +293,13 @@ class CompanyController extends Controller
                                 ->where('resumen_zulus.movil', $request->movil)
                                 ->where('resumen_zulus.fecha', 'LIKE', '%' . date('Y-m-d') . '%')
                                 ->get();
-
+                    $porc_chofer =   0;
+                    $porc_movil  =   0;
+                    $total_zulu  =   0;
                     foreach ($resumen as $item) {
-
+                        $porc_chofer+=$item->pchofer;
+                        $porc_movil+=$item->pmovil;
+                        $total_zulu+=$item->total;
                         array_push($servicios, [
                             'pchofer' => 0,
                             'pmovil' => $item->pmovil,
@@ -307,7 +311,7 @@ class CompanyController extends Controller
                     }
 
                     if ($insert_1 && $insert_2 && $insert_3 && $insert_4 && $insert_5 && $insert_6) {
-                        return response()->json(['success' => true, 'servicios' => $servicios, 'msg' => 'Datos ingresados correctamente, Vale ingresado exitosamente'], 200);
+                        return response()->json(['success' => true, 'servicios' => $servicios, 'porc_chofer' => $porc_chofer, 'porc_movil' => $porc_movil, 'total_zulu' => $total_zulu,  'msg' => 'Datos ingresados correctamente, Vale ingresado exitosamente'], 200);
                     } else {
                         return response()->json(['error' => true], 200);
                     }
@@ -431,7 +435,13 @@ class CompanyController extends Controller
                                 ->where('resumen_zulus.fecha', 'LIKE', '%' . date('Y-m-d') . '%')
                                 ->get();
 
-                    foreach ($resumen as $item) {
+                        $porc_chofer =   0;
+                        $porc_movil  =   0;
+                        $total_zulu  =   0;
+                        foreach ($resumen as $item) {
+                            $porc_chofer+=$item->pchofer;
+                            $porc_movil+=$item->pmovil;
+                            $total_zulu+=$item->total;
 
                         array_push($servicios, [
                             'pchofer' => 0,
@@ -444,7 +454,7 @@ class CompanyController extends Controller
                     }
 
                     if ($insert_1 && $insert_2 && $insert_3 && $insert_4 && $insert_5 && $insert_6) {
-                        return response()->json(['success' => true, 'servicios' => $servicios, 'msg' => 'Datos ingresados correctamente en la tabla clinica integral. Vale ingresado'], 200);
+                        return response()->json(['success' => true, 'servicios' => $servicios, 'porc_chofer' => $porc_chofer, 'porc_movil' => $porc_movil, 'total_zulu' => $total_zulu, 'msg' => 'Datos ingresados correctamente en la tabla clinica integral. Vale ingresado'], 200);
                     } else {
                         return response()->json(['error' => true], 200);
                     }
@@ -562,7 +572,13 @@ class CompanyController extends Controller
                                 ->where('resumen_zulus.fecha', 'LIKE', '%' . date('Y-m-d') . '%')
                                 ->get();
 
+                    $porc_chofer =   0;
+                    $porc_movil  =   0;
+                    $total_zulu  =   0;
                     foreach ($resumen as $item) {
+                        $porc_chofer+=$item->pchofer;
+                        $porc_movil+=$item->pmovil;
+                        $total_zulu+=$item->total;
 
                         array_push($servicios, [
                             'pchofer' => 0,
@@ -575,7 +591,7 @@ class CompanyController extends Controller
                     }
 
                     if ($insert_1 && $insert_2 && $insert_3 && $insert_4 && $insert_5 && $insert_6) {
-                        return response()->json(['success' => true, 'servicios' => $servicios, 'msg' => 'Datos ingresados correctamente en la tabla convenios mutual. Vale ingresado'], 200);
+                        return response()->json(['success' => true, 'servicios' => $servicios, 'porc_chofer' => $porc_chofer, 'porc_movil' => $porc_movil, 'total_zulu' => $total_zulu, 'msg' => 'Datos ingresados correctamente en la tabla convenios mutual. Vale ingresado'], 200);
                     } else {
                         return response()->json(['error' => true], 200);
                     }
@@ -707,7 +723,13 @@ class CompanyController extends Controller
                                 ->where('resumen_zulus.fecha', 'LIKE', '%' . date('Y-m-d') . '%')
                                 ->get();
 
+                    $porc_chofer =   0;
+                    $porc_movil  =   0;
+                    $total_zulu  =   0;
                     foreach ($resumen as $item) {
+                        $porc_chofer+=$item->pchofer;
+                        $porc_movil+=$item->pmovil;
+                        $total_zulu+=$item->total;
 
                         array_push($servicios, [
                             'pchofer' => $item->pchofer,
@@ -720,7 +742,7 @@ class CompanyController extends Controller
                     }
 
                     if ($insert_1 && $insert_2 && $insert_3 && $insert_4 && $insert_5 && $insert_6) {
-                        return response()->json(['success' => true, 'servicios' => $servicios, 'msg' => 'Datos ingresados correctamente, Vale ingresado exitosamente'], 200);
+                        return response()->json(['success' => true, 'servicios' => $servicios, 'porc_chofer' => $porc_chofer, 'porc_movil' => $porc_movil, 'total_zulu' => $total_zulu, 'msg' => 'Datos ingresados correctamente, Vale ingresado exitosamente'], 200);
                     } else {
                         return response()->json(['error' => true], 200);
                     }
@@ -845,7 +867,13 @@ class CompanyController extends Controller
                                 ->where('resumen_zulus.fecha', 'LIKE', '%' . date('Y-m-d') . '%')
                                 ->get();
 
+                    $porc_chofer =   0;
+                    $porc_movil  =   0;
+                    $total_zulu  =   0;
                     foreach ($resumen as $item) {
+                        $porc_chofer+=$item->pchofer;
+                        $porc_movil+=$item->pmovil;
+                        $total_zulu+=$item->total;
 
                         array_push($servicios, [
                             'pchofer' => $item->pchofer,
@@ -858,7 +886,7 @@ class CompanyController extends Controller
                     }
 
                     if ($insert_1 && $insert_2 && $insert_3 && $insert_4 && $insert_5 && $insert_6) {
-                        return response()->json(['success' => true, 'servicios' => $servicios, 'msg' => 'Datos ingresados correctamente en la tabla clinica integral. Vale ingresado'], 200);
+                        return response()->json(['success' => true, 'servicios' => $servicios, 'porc_chofer' => $porc_chofer, 'porc_movil' => $porc_movil, 'total_zulu' => $total_zulu, 'msg' => 'Datos ingresados correctamente en la tabla clinica integral. Vale ingresado'], 200);
                     } else {
                         return response()->json(['error' => true], 200);
                     }
@@ -984,7 +1012,13 @@ class CompanyController extends Controller
                                 ->where('resumen_zulus.fecha', 'LIKE', '%' . date('Y-m-d') . '%')
                                 ->get();
 
+                    $porc_chofer =   0;
+                    $porc_movil  =   0;
+                    $total_zulu  =   0;
                     foreach ($resumen as $item) {
+                        $porc_chofer+=$item->pchofer;
+                        $porc_movil+=$item->pmovil;
+                        $total_zulu+=$item->total;
 
                         array_push($servicios, [
                             'pchofer' => $item->pchofer,
@@ -997,7 +1031,7 @@ class CompanyController extends Controller
                     }
 
                     if ($insert_1 && $insert_2 && $insert_3 && $insert_4 && $insert_5 && $insert_6) {
-                        return response()->json(['success' => true, 'servicios' => $servicios, 'msg' => 'Datos ingresados correctamente en la tabla convenios mutual. Vale ingresado'], 200);
+                        return response()->json(['success' => true, 'servicios' => $servicios, 'porc_chofer' => $porc_chofer, 'porc_movil' => $porc_movil, 'total_zulu' => $total_zulu, 'msg' => 'Datos ingresados correctamente en la tabla convenios mutual. Vale ingresado'], 200);
                     } else {
                         return response()->json(['error' => true], 200);
                     }
