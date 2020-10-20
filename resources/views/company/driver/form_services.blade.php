@@ -218,7 +218,7 @@
         </div>
     </div>
 </div>
-<div class="modal fade" id="modal_cliente" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal hide fade in" id="modal_cliente" data-keyboard="false" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-md">
       <div class="modal-content">
         <div class="modal-header" style="background-color: #0090e738;">
@@ -263,7 +263,7 @@
                 <div class="form-group row">
                     <div class="col-sm-12">
                         <div class="alert alert-info" role="alert">
-                            <table class="table table-striped" style="background-color: #eee; color:#000; width:100%">
+                            <table class="table table-striped" style="background-color: #eee; color:#000; width:100%" id="tabla_clientes" style="display: block;">
                                 <thead>
                                     <tr class="thead-color">
                                         <th> # </th>
@@ -274,7 +274,7 @@
                                 <tbody id="cliente"></tbody>
                             </table>
                         </div>
-                        <button type="submit" class="btn btn-md btn-primary btn-lg float-right" id="store_clients" onclick="register()" disabled> Registar</button>
+                        <button type="submit" class="btn btn-md btn-primary btn-lg float-right" id="store_clients" disabled> Registar</button>
                     </div>
                 </div>
             </div>
@@ -282,8 +282,7 @@
       </div>
     </div>
 </div>
-
-<div class="modal fade" id="modal_cliente_add" style="z-index: 1400;"  tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal hide fade in" id="modal_cliente_add" style="z-index: 1400;"  data-keyboard="false" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-sm">
       <div class="modal-content">
         <div class="modal-header" style="background-color: #0090e738;">
@@ -407,13 +406,18 @@
         }else if(zulu=="MUTUAL DE SEGURIDAD" && paciente_select==""){
             toastr.error('Up! Error verifique, a seleccionado mutual de seguridad y en este proceso debe agregar un paciente', {timeOut: 10000});
         }else{
-            const clientes = [];
             $("#spinner").fadeIn();
             $("#modal_cliente").modal('show');
+            $("#modal_cliente").modal({ backdrop: 'static'});
             $("#rut").val('');
             $("#codigo").val('');
             $("#form_codigo").hide();
             cliente();
+            clientes.splice(0, clientes.length);
+            $("#tabla_clientes tbody").children().remove();
+            if(clientes.length==0){
+                $('#store_clients').prop("disabled", true);
+            }
         }
 
         });
@@ -479,6 +483,121 @@
                 $("#nombres_apellidos3").val('');
             }
         });
+
+        $('body').on('click', '#store_clients', function () {
+            var movil           = $("#movil").val();
+            var chofer          = $("#chofer_select").val();
+            var porcentaje      = $("#porcentaje").val();
+            var zulu            = $("#zulu").val();
+            var vale            = $("#vale").val();
+            var recorrido       = $("#recorrido").val();
+            var valor           = $("#valor").val();
+            var paciente_select = $("#paciente_select").val();
+            var paciente        = $("#paciente").val();
+            var run             = $("#run").val();
+            var rut_cliente0             = $("#rut_cliente0").val();
+            var nombres_apellidos0       = $("#nombres_apellidos0").val();
+            var rut_cliente1             = $("#rut_cliente1").val();
+            var nombres_apellidos1       = $("#nombres_apellidos1").val();
+            var rut_cliente2             = $("#rut_cliente2").val();
+            var nombres_apellidos2       = $("#nombres_apellidos2").val();
+            var rut_cliente3             = $("#rut_cliente3").val();
+            var nombres_apellidos3       = $("#nombres_apellidos3").val();
+
+            $("#spinner_modal").fadeIn();
+            $("#spinner").fadeIn();
+            axios.post('{{ route('company.store')}}', {
+                movil:movil,
+                chofer:chofer,
+                porcentaje:porcentaje,
+                zulu:zulu,
+                vale:vale,
+                recorrido:recorrido,
+                valor:valor,
+                paciente:paciente,
+                run:run,
+                rut_cliente0:rut_cliente0,
+                nombres_apellidos0:nombres_apellidos0,
+                rut_cliente1:rut_cliente1,
+                nombres_apellidos1:nombres_apellidos1,
+                rut_cliente2:rut_cliente2,
+                nombres_apellidos2:nombres_apellidos2,
+                rut_cliente3:rut_cliente3,
+                nombres_apellidos3:nombres_apellidos3
+            }).then(response => {
+                if(response.data.success){
+                    toastr.success(''+response.data.msg+'', {timeOut: 10000});
+                    $("#store_disabled").hide();
+                    $("#store").show();
+                    $("#spinner").fadeOut();
+                    $("#spinner_modal").fadeOut();
+                    $("#modal_cliente").modal('hide');
+
+                    var porc_chofer =   0;
+                    var porc_movil  =   0;
+                    var total_zulu  =   0;
+
+                    $.each(response.data.servicios, function(i,item){
+
+                        porc_chofer+=item.pchofer;
+                        porc_movil+=item.pmovil;
+                        total_zulu+=item.total;
+                    });
+
+                    var  format_pc = new Intl.NumberFormat("de-DE", {style: "currency", currency: "USD"}).format(porc_chofer);
+                    var  format_pm = new Intl.NumberFormat("de-DE", {style: "currency", currency: "USD"}).format(porc_movil);
+                    var  format_tz = new Intl.NumberFormat("de-DE", {style: "currency", currency: "USD"}).format(total_zulu);
+
+                    $("#format_pc").html(format_pc);
+                    $("#format_pm").html(format_pm);
+                    $("#format_tz").html(format_tz);
+
+
+                    $('#list_servicios').html(function(){
+                        html = '';
+                        $.each(response.data.servicios, function(i,item){
+                            var  ft_pc = new Intl.NumberFormat("de-DE", {style: "currency", currency: "USD"}).format(item.pchofer);
+                            var  ft_pm = new Intl.NumberFormat("de-DE", {style: "currency", currency: "USD"}).format(item.pmovil);
+                            var  ft_tz = new Intl.NumberFormat("de-DE", {style: "currency", currency: "USD"}).format(item.total);
+                            html += '<tr>';
+                                html += '<td>'+item.vale+'</td>';
+                                html += '<td>'+item.zulu+'</td>';
+                                html += '<td>'+item.recorrido+'</td>';
+                                html += '<td>'+ft_pc+'</td>';
+                                html += '<td>'+ft_pm+'</td>';
+                                html += '<td>'+ft_tz+'</td>';
+                            html += '</tr>';
+                        });
+                        return html;
+                    });
+                    clear();
+                    getChofer();
+                    clientes.splice(0, clientes.length);
+                }else{
+                    toastr.error('Up! Error, no se ingresaron los datos correctamente. Intente nuevamente', {timeOut: 10000});
+                    $("#store_disabled").hide();
+                    $("#store").show();
+                    $("#spinner").fadeOut();
+                    $("#spinner_modal").fadeOut();
+                    clear();
+                    getChofer();
+                    clientes.splice(0, clientes.length);
+                    $('#store_clients').prop("disabled", false);
+                }
+            }).catch(e => {
+                toastr.error('Up! Error '+e+'', {timeOut: 10000});
+                $("#store_disabled").hide();
+                $("#store").show();
+                $("#spinner").fadeOut();
+                $("#spinner_modal").fadeOut();
+                $('#store_clients').prop("disabled", false);
+                clear();
+                getChofer();
+                clientes.splice(0, clientes.length);
+                console.log(e);
+            });
+        });
+
     });
 
 
@@ -601,7 +720,7 @@
                 });
                 clear();
                 getChofer();
-                const clientes = [];
+                var clientes = [];
             }else{
                 toastr.error('Up! Error, no se ingresaron los datos correctamente. Intente nuevamente', {timeOut: 10000});
                 $("#store_disabled").hide();
@@ -610,7 +729,7 @@
                 $("#spinner_modal").fadeOut();
                 clear();
                 getChofer();
-                const clientes = [];
+                var clientes = [];
                 $('#store_clients').prop("disabled", false);
             }
         }).catch(e => {
@@ -622,7 +741,7 @@
             $('#store_clients').prop("disabled", false);
             clear();
             getChofer();
-            const clientes = [];
+            var clientes = [];
             console.log(e);
         });
     }
