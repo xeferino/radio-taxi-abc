@@ -295,14 +295,15 @@
                     <div class="col-sm-12">
                         <div class="form-group">
                             <div class="input-group">
-                                <input type="hidden" class="form-control" name="cliente_add" id="cliente_add">
-                                <input type="hidden" class="form-control" name="rut_add" id="rut_add">
-                                <input type="text" class="form-control" name="cliente_modal" id="cliente_modal">
-                                <div class="input-group-append">
-                                    <button class="btn btn-sm btn-primary" type="button" id="client_button">+</button>
-                                </div>
+                                <input type="text" class="form-control" name="rut_modal" id="rut_modal" placeholder="15.400.400">
                             </div>
                         </div>
+                        <div class="form-group">
+                            <div class="input-group">
+                                <input type="text" class="form-control" name="cliente_modal" id="cliente_modal" placeholder="Nombres y Apellidos">
+                            </div>
+                        </div>
+                        <button class="btn btn-lg btn-primary float-right" type="button" id="client_button">Agregar</button>
                     </div>
                 </div>
             </div>
@@ -427,8 +428,8 @@
                 toastr.error('Up! Error has alnzado el maximo de registro de clientes para el viaje.', {timeOut: 3000});
             }else{
                 clientes.push({
-                    "rut":  $("#rut_add").val(),
-                    "fullname": $("#cliente_add").val()
+                    "rut":  $("#rut_modal").val(),
+                    "fullname": $("#cliente_modal").val()
                 });
                 $('#store_clients').prop("disabled", false);
             }
@@ -624,6 +625,9 @@
         var rut = $("#rut").val();
         $("#cliente_add").val('');
         $("#rut_add").val('');
+        $("#cliente").val('');
+        $("#cliente_modal").val('');
+        $("#rut_modal").val('');
         $("#spinner").fadeOut();
         if(rut!=""){
             $("#spinner_modal").fadeIn();
@@ -634,12 +638,15 @@
                 if(response.data.success){
                     $("#cliente").val(response.data.cliente[0].nombres);
                     $("#cliente_modal").val(response.data.cliente[0].nombres);
+                    $("#rut_modal").val(response.data.cliente[0].rut);
                     $("#cliente_add").val(response.data.cliente[0].nombres);
                     $("#rut_add").val(response.data.cliente[0].rut);
                     $("#modal_cliente_add").modal('show');
                     $("#spinner_modal").fadeOut();
                 }else{
-                    toastr.error('Up! Error buscando el R.U.T del cliente', {timeOut: 10000});
+                    $("#rut_modal").val(rut);
+                    $("#modal_cliente_add").modal('show');
+                    $("#spinner_modal").fadeOut();
                     $("#spinner_modal").fadeOut();
                 }
             }).catch(e => {

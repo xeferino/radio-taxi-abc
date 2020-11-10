@@ -128,7 +128,7 @@ class CompanyController extends Controller
         if (count($cliente) > 0) {
             return response()->json(['success' => true, 'cliente' => $cliente], 200);
         } else {
-            return response()->json(['error' => true], 200);
+            return response()->json(['success' => false], 200);
         }
     }
 
@@ -169,7 +169,6 @@ class CompanyController extends Controller
 
     public function store(Request $request)
     {
-
         $servicios =  array ();
         switch ($request->porcentaje) {
             case ($request->porcentaje == 100):
@@ -177,6 +176,40 @@ class CompanyController extends Controller
                 $cal_porc_movil = (($request->valor * $request->porcentaje) / 100);
 
                 if ($request->zulu != "MUTUAL DE SEGURIDAD" && $request->zulu != "INTEGRAL") {
+
+                    $client0 = DB::table('clientes')->where('rut', $request->rut_cliente0)->count();
+                    $client1 = DB::table('clientes')->where('rut', $request->rut_cliente1)->count();
+                    $client2 = DB::table('clientes')->where('rut', $request->rut_cliente2)->count();
+                    $client3 = DB::table('clientes')->where('rut', $request->rut_cliente3)->count();
+                    if($client0==0){
+                        if((isset($request->rut_cliente0) && $request->rut_cliente0) &&  (isset($request->nombres_apellidos0) && $request->nombres_apellidos0)){
+                            $insert_client0 = DB::table('clientes')->insert([
+                                ['rut' => $request->rut_cliente0, 'nombres' => $request->nombres_apellidos0],
+                            ]);
+                        }
+                    }
+                    if($client1==0){
+                        if((isset($request->rut_cliente1) && $request->rut_cliente1) &&  (isset($request->nombres_apellidos1) && $request->nombres_apellidos1)){
+                            $insert_client1 = DB::table('clientes')->insert([
+                                ['rut' => $request->rut_cliente1, 'nombres' => $request->nombres_apellidos1],
+                            ]);
+                        }
+                    }
+                    if($client2==0){
+                        if((isset($request->rut_cliente2) && $request->rut_cliente2) &&  (isset($request->nombres_apellidos2) && $request->nombres_apellidos2)){
+                            $insert_client2 = DB::table('clientes')->insert([
+                                ['rut' => $request->rut_cliente2, 'nombres' => $request->nombres_apellidos2],
+                            ]);
+                        }
+                    }
+
+                    if($client3==0){
+                        if((isset($request->rut_cliente3) && $request->rut_cliente3) &&  (isset($request->nombres_apellidos3) && $request->nombres_apellidos3)){
+                            $insert_client3 = DB::table('clientes')->insert([
+                                ['rut' => $request->rut_cliente3, 'nombres' => $request->nombres_apellidos3],
+                            ]);
+                        }
+                    }
 
                     $insert_1 = DB::table('convenios')->insert([
                         ['movil' => $request->movil,
@@ -317,6 +350,40 @@ class CompanyController extends Controller
                     }
 
                 } elseif ($request->zulu != "MUTUAL DE SEGURIDAD" && $request->zulu == "INTEGRAL") {
+
+                    $client0 = DB::table('clientes')->where('rut', $request->rut_cliente0)->count();
+                    $client1 = DB::table('clientes')->where('rut', $request->rut_cliente1)->count();
+                    $client2 = DB::table('clientes')->where('rut', $request->rut_cliente2)->count();
+                    $client3 = DB::table('clientes')->where('rut', $request->rut_cliente3)->count();
+                    if($client0==0){
+                        if((isset($request->rut_cliente0) && $request->rut_cliente0) &&  (isset($request->nombres_apellidos0) && $request->nombres_apellidos0)){
+                            $insert_client0 = DB::table('clientes')->insert([
+                                ['rut' => $request->rut_cliente0, 'nombres' => $request->nombres_apellidos0],
+                            ]);
+                        }
+                    }
+                    if($client1==0){
+                        if((isset($request->rut_cliente1) && $request->rut_cliente1) &&  (isset($request->nombres_apellidos1) && $request->nombres_apellidos1)){
+                            $insert_client1 = DB::table('clientes')->insert([
+                                ['rut' => $request->rut_cliente1, 'nombres' => $request->nombres_apellidos1],
+                            ]);
+                        }
+                    }
+                    if($client2==0){
+                        if((isset($request->rut_cliente2) && $request->rut_cliente2) &&  (isset($request->nombres_apellidos2) && $request->nombres_apellidos2)){
+                            $insert_client2 = DB::table('clientes')->insert([
+                                ['rut' => $request->rut_cliente2, 'nombres' => $request->nombres_apellidos2],
+                            ]);
+                        }
+                    }
+
+                    if($client3==0){
+                        if((isset($request->rut_cliente3) && $request->rut_cliente3) &&  (isset($request->nombres_apellidos3) && $request->nombres_apellidos3)){
+                            $insert_client3 = DB::table('clientes')->insert([
+                                ['rut' => $request->rut_cliente3, 'nombres' => $request->nombres_apellidos3],
+                            ]);
+                        }
+                    }
 
                     $insert_1 = DB::table('clinica integral')->insert([
                         ['movil' => $request->movil,
@@ -459,6 +526,40 @@ class CompanyController extends Controller
                         return response()->json(['error' => true], 200);
                     }
                 } elseif ($request->zulu == "MUTUAL DE SEGURIDAD" && $request->zulu != "INTEGRAL") {
+
+                    $client0 = DB::table('clientes')->where('rut', $request->rut_cliente0)->count();
+                    $client1 = DB::table('clientes')->where('rut', $request->rut_cliente1)->count();
+                    $client2 = DB::table('clientes')->where('rut', $request->rut_cliente2)->count();
+                    $client3 = DB::table('clientes')->where('rut', $request->rut_cliente3)->count();
+                    if($client0==0){
+                        if((isset($request->rut_cliente0) && $request->rut_cliente0) &&  (isset($request->nombres_apellidos0) && $request->nombres_apellidos0)){
+                            $insert_client0 = DB::table('clientes')->insert([
+                                ['rut' => $request->rut_cliente0, 'nombres' => $request->nombres_apellidos0],
+                            ]);
+                        }
+                    }
+                    if($client1==0){
+                        if((isset($request->rut_cliente1) && $request->rut_cliente1) &&  (isset($request->nombres_apellidos1) && $request->nombres_apellidos1)){
+                            $insert_client1 = DB::table('clientes')->insert([
+                                ['rut' => $request->rut_cliente1, 'nombres' => $request->nombres_apellidos1],
+                            ]);
+                        }
+                    }
+                    if($client2==0){
+                        if((isset($request->rut_cliente2) && $request->rut_cliente2) &&  (isset($request->nombres_apellidos2) && $request->nombres_apellidos2)){
+                            $insert_client2 = DB::table('clientes')->insert([
+                                ['rut' => $request->rut_cliente2, 'nombres' => $request->nombres_apellidos2],
+                            ]);
+                        }
+                    }
+
+                    if($client3==0){
+                        if((isset($request->rut_cliente3) && $request->rut_cliente3) &&  (isset($request->nombres_apellidos3) && $request->nombres_apellidos3)){
+                            $insert_client3 = DB::table('clientes')->insert([
+                                ['rut' => $request->rut_cliente3, 'nombres' => $request->nombres_apellidos3],
+                            ]);
+                        }
+                    }
 
                     $insert_1 = DB::table('convenios mutual')->insert([
                         ['movil' => $request->movil,
@@ -605,6 +706,40 @@ class CompanyController extends Controller
 
                 if ($request->zulu != "MUTUAL DE SEGURIDAD" && $request->zulu != "INTEGRAL") {
 
+                    $client0 = DB::table('clientes')->where('rut', $request->rut_cliente0)->count();
+                    $client1 = DB::table('clientes')->where('rut', $request->rut_cliente1)->count();
+                    $client2 = DB::table('clientes')->where('rut', $request->rut_cliente2)->count();
+                    $client3 = DB::table('clientes')->where('rut', $request->rut_cliente3)->count();
+                    if($client0==0){
+                        if((isset($request->rut_cliente0) && $request->rut_cliente0) &&  (isset($request->nombres_apellidos0) && $request->nombres_apellidos0)){
+                            $insert_client0 = DB::table('clientes')->insert([
+                                ['rut' => $request->rut_cliente0, 'nombres' => $request->nombres_apellidos0],
+                            ]);
+                        }
+                    }
+                    if($client1==0){
+                        if((isset($request->rut_cliente1) && $request->rut_cliente1) &&  (isset($request->nombres_apellidos1) && $request->nombres_apellidos1)){
+                            $insert_client1 = DB::table('clientes')->insert([
+                                ['rut' => $request->rut_cliente1, 'nombres' => $request->nombres_apellidos1],
+                            ]);
+                        }
+                    }
+                    if($client2==0){
+                        if((isset($request->rut_cliente2) && $request->rut_cliente2) &&  (isset($request->nombres_apellidos2) && $request->nombres_apellidos2)){
+                            $insert_client2 = DB::table('clientes')->insert([
+                                ['rut' => $request->rut_cliente2, 'nombres' => $request->nombres_apellidos2],
+                            ]);
+                        }
+                    }
+
+                    if($client3==0){
+                        if((isset($request->rut_cliente3) && $request->rut_cliente3) &&  (isset($request->nombres_apellidos3) && $request->nombres_apellidos3)){
+                            $insert_client3 = DB::table('clientes')->insert([
+                                ['rut' => $request->rut_cliente3, 'nombres' => $request->nombres_apellidos3],
+                            ]);
+                        }
+                    }
+
                     $insert_1 = DB::table('convenios')->insert([
                         ['movil' => $request->movil,
                             'chofer' => $request->chofer,
@@ -749,6 +884,40 @@ class CompanyController extends Controller
 
                 } elseif ($request->zulu != "MUTUAL DE SEGURIDAD" && $request->zulu == "INTEGRAL") {
 
+                    $client0 = DB::table('clientes')->where('rut', $request->rut_cliente0)->count();
+                    $client1 = DB::table('clientes')->where('rut', $request->rut_cliente1)->count();
+                    $client2 = DB::table('clientes')->where('rut', $request->rut_cliente2)->count();
+                    $client3 = DB::table('clientes')->where('rut', $request->rut_cliente3)->count();
+                    if($client0==0){
+                        if((isset($request->rut_cliente0) && $request->rut_cliente0) &&  (isset($request->nombres_apellidos0) && $request->nombres_apellidos0)){
+                            $insert_client0 = DB::table('clientes')->insert([
+                                ['rut' => $request->rut_cliente0, 'nombres' => $request->nombres_apellidos0],
+                            ]);
+                        }
+                    }
+                    if($client1==0){
+                        if((isset($request->rut_cliente1) && $request->rut_cliente1) &&  (isset($request->nombres_apellidos1) && $request->nombres_apellidos1)){
+                            $insert_client1 = DB::table('clientes')->insert([
+                                ['rut' => $request->rut_cliente1, 'nombres' => $request->nombres_apellidos1],
+                            ]);
+                        }
+                    }
+                    if($client2==0){
+                        if((isset($request->rut_cliente2) && $request->rut_cliente2) &&  (isset($request->nombres_apellidos2) && $request->nombres_apellidos2)){
+                            $insert_client2 = DB::table('clientes')->insert([
+                                ['rut' => $request->rut_cliente2, 'nombres' => $request->nombres_apellidos2],
+                            ]);
+                        }
+                    }
+
+                    if($client3==0){
+                        if((isset($request->rut_cliente3) && $request->rut_cliente3) &&  (isset($request->nombres_apellidos3) && $request->nombres_apellidos3)){
+                            $insert_client3 = DB::table('clientes')->insert([
+                                ['rut' => $request->rut_cliente3, 'nombres' => $request->nombres_apellidos3],
+                            ]);
+                        }
+                    }
+
                     $insert_1 = DB::table('clinica integral')->insert([
                         ['movil' => $request->movil,
                             'chofer' => $request->chofer,
@@ -891,6 +1060,40 @@ class CompanyController extends Controller
                         return response()->json(['error' => true], 200);
                     }
                 } elseif ($request->zulu == "MUTUAL DE SEGURIDAD") {
+
+                    $client0 = DB::table('clientes')->where('rut', $request->rut_cliente0)->count();
+                    $client1 = DB::table('clientes')->where('rut', $request->rut_cliente1)->count();
+                    $client2 = DB::table('clientes')->where('rut', $request->rut_cliente2)->count();
+                    $client3 = DB::table('clientes')->where('rut', $request->rut_cliente3)->count();
+                    if($client0==0){
+                        if((isset($request->rut_cliente0) && $request->rut_cliente0) &&  (isset($request->nombres_apellidos0) && $request->nombres_apellidos0)){
+                            $insert_client0 = DB::table('clientes')->insert([
+                                ['rut' => $request->rut_cliente0, 'nombres' => $request->nombres_apellidos0],
+                            ]);
+                        }
+                    }
+                    if($client1==0){
+                        if((isset($request->rut_cliente1) && $request->rut_cliente1) &&  (isset($request->nombres_apellidos1) && $request->nombres_apellidos1)){
+                            $insert_client1 = DB::table('clientes')->insert([
+                                ['rut' => $request->rut_cliente1, 'nombres' => $request->nombres_apellidos1],
+                            ]);
+                        }
+                    }
+                    if($client2==0){
+                        if((isset($request->rut_cliente2) && $request->rut_cliente2) &&  (isset($request->nombres_apellidos2) && $request->nombres_apellidos2)){
+                            $insert_client2 = DB::table('clientes')->insert([
+                                ['rut' => $request->rut_cliente2, 'nombres' => $request->nombres_apellidos2],
+                            ]);
+                        }
+                    }
+
+                    if($client3==0){
+                        if((isset($request->rut_cliente3) && $request->rut_cliente3) &&  (isset($request->nombres_apellidos3) && $request->nombres_apellidos3)){
+                            $insert_client3 = DB::table('clientes')->insert([
+                                ['rut' => $request->rut_cliente3, 'nombres' => $request->nombres_apellidos3],
+                            ]);
+                        }
+                    }
 
                     $insert_1 = DB::table('convenios mutual')->insert([
                         ['movil' => $request->movil,
