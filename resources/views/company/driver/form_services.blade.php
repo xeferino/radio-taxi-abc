@@ -312,7 +312,7 @@
     </div>
 </div>
 <!-- Modal Pacientes-->
-<div class="modal fade" id="modal_paciente" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal hide fade in" id="modal_paciente" data-keyboard="false" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header" style="background-color: #0090e738;">
@@ -331,7 +331,6 @@
     <!-- /.modal-dialog -->
 </div>
 <!-- Modal Pacientes-->
-
 <script>
     jQuery(document).ready(function($){
         $("#zulu").select2();

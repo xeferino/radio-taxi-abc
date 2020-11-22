@@ -1242,4 +1242,22 @@ class CompanyController extends Controller
                 break;
         }
     }
+    public function storePaciente(Request $request)
+    {
+        $paciente = DB::table('paciente')->where('run', $request->run_pac)->count();
+        if($paciente>0){
+            return response()->json(['paciente' => true, 'msg' => 'El paciente que intenta, registrar ya existe!'], 200);
+        }else{
+            if((isset($request->run_pac) && $request->run_pac) &&  (isset($request->nom_pac) && $request->nom_pac)){
+                $saved = DB::table('paciente')->insert([['run' => $request->run_pac, 'paciente' => $request->nom_pac]]);
+                if($saved){
+                    return response()->json(['success' => true, 'msg' => 'Paciente registrado Exitosamente'], 200);
+                }else{
+                    return response()->json(['error' => true], 422);
+                }
+            }else{
+                return response()->json(['error' => true], 422);
+            }
+        }
+    }
 }
